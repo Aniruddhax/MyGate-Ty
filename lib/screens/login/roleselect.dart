@@ -1,8 +1,6 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mygate/config/size_config.dart';
@@ -12,7 +10,6 @@ import 'package:mygate/screens/login/signup.dart';
 import 'package:mygate/screens/login/stafflogin.dart';
 import 'package:mygate/screens/splash_screen.dart';
 
-import '../home_screen.dart';
 
 class roleselect extends StatefulWidget {
   const roleselect({Key? key}) : super(key: key);

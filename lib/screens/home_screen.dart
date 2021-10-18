@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/config/size_config.dart';
 import 'package:mygate/screens/login/resilogin.dart';
 import 'package:mygate/screens/login/roleselect.dart';
-import 'package:mygate/screens/login/stafflogin.dart';
 import 'package:mygate/screens/splash_screen.dart';
 
 class homescreen extends StatefulWidget {

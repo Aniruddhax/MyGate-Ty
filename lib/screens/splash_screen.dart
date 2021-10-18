@@ -10,7 +10,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mygate/config/size_config.dart';
 import 'package:mygate/screens/home_screen.dart';
-import 'package:mygate/screens/login/signup.dart';
 
 import 'login/roleselect.dart';
 
@@ -36,9 +35,8 @@ class _splashState extends State<splash> {
     //         MaterialPageRoute(builder: (context) => const roleselect())));
 final userdata = GetStorage();
              userdata.writeIfNull('isloggedin', false);
-    bool loginchecker = userdata.read('isloggedin');
 
-    Future.delayed(Duration(seconds: 4), () async {
+    Future.delayed(const Duration(seconds: 4), () async {
       userdata.read('isloggedin')
           ? Navigator.push(
               context, MaterialPageRoute(builder: (context) => const homescreen()))
