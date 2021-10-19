@@ -48,15 +48,15 @@ class _staffloginState extends State<stafflogin> {
                   const second_ellipse(),
                   Center(
                       child: Form(
-                  autovalidateMode: AutovalidateMode.disabled,
-                  key: _formKey,
+                    autovalidateMode: AutovalidateMode.disabled,
+                    key: _formKey,
                     child: Column(
                       children: [
                         SizedBox(
                           height: SizeConfig.screenHeight * 0.13,
                         ),
                         Text(
-                          "Login For Committee Members",
+                          "Login For Staff Members",
                           style: GoogleFonts.nunito(
                             fontSize: SizeConfig.blockSizeVertical * 2,
                             fontWeight: FontWeight.w300,
@@ -91,19 +91,19 @@ class _staffloginState extends State<stafflogin> {
                             controller: staffemail,
                             keyboardType: TextInputType.emailAddress,
                             validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please Enter a Valid Email Address';
-                            }
-                            if (!RegExp(
-                                    "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                                .hasMatch(value)) {
-                              return ("Please Enter a valid email");
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            staffemail.text = value!;
-                          },
+                              if (value!.isEmpty) {
+                                return 'Please Enter a Valid Email Address';
+                              }
+                              if (!RegExp(
+                                      "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                                  .hasMatch(value)) {
+                                return ("Please Enter a valid email");
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              staffemail.text = value!;
+                            },
                             decoration: InputDecoration(
                                 focusedErrorBorder: OutlineInputBorder(
                                   borderSide:
@@ -139,17 +139,17 @@ class _staffloginState extends State<stafflogin> {
                             controller: staffpass,
                             obscureText: _isObscure,
                             validator: (value) {
-                            RegExp regex = RegExp(r'^.{6,}$');
-                            if (value!.isEmpty) {
-                              return ("Password is required for login");
-                            }
-                            if (!regex.hasMatch(value)) {
-                              return ("Enter Valid Password(Min. 6 Character)");
-                            }
-                          },
-                          onSaved: (value) {
-                            staffpass.text = value!;
-                          },
+                              RegExp regex = RegExp(r'^.{6,}$');
+                              if (value!.isEmpty) {
+                                return ("Password is required for login");
+                              }
+                              if (!regex.hasMatch(value)) {
+                                return ("Enter Valid Password(Min. 6 Character)");
+                              }
+                            },
+                            onSaved: (value) {
+                              staffpass.text = value!;
+                            },
                             decoration: InputDecoration(
                                 focusedErrorBorder: OutlineInputBorder(
                                   borderSide:
@@ -211,7 +211,7 @@ class _staffloginState extends State<stafflogin> {
                                     )),
                               ),
                               onPressed: () async {
-                               if (_formKey.currentState!.validate()) {
+                                if (_formKey.currentState!.validate()) {
                                   final QueryBuilder<ParseObject> parseQuery =
                                       QueryBuilder<ParseObject>(
                                           ParseObject('MyGate'));
@@ -235,7 +235,6 @@ class _staffloginState extends State<stafflogin> {
                                     String? userrole =
                                         object.get<String>('role');
 
-                                    
                                     userdata.write('name', username);
                                     userdata.write('email', useremail);
                                     userdata.write('role', userrole);
@@ -262,7 +261,6 @@ class _staffloginState extends State<stafflogin> {
                                     ).show(context);
                                   }
                                 }
-                                
                               },
                             ),
                           ),

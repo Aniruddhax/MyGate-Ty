@@ -331,7 +331,32 @@ class _signupState extends State<signup> {
                               ),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  signup();
+                                  final QueryBuilder<ParseObject> parseQuery =
+                                      QueryBuilder<ParseObject>(
+                                          ParseObject('MyGate'));
+                                  parseQuery
+                                    .whereContains(
+                                        'email', useremail.text.trim());
+                                  final ParseResponse parseResponse =
+                                      await parseQuery.query();
+                                  if (parseResponse.success &&
+                                      parseResponse.results != null) {
+                                    Flushbar(
+                                      flushbarPosition: FlushbarPosition.TOP,
+                                      flushbarStyle: FlushbarStyle.GROUNDED,
+                                      message:
+                                          "Email Already is used by another Account",
+                                      icon: Icon(
+                                        Icons.info_outline,
+                                        size: 28.0,
+                                        color: Colors.blue[300],
+                                      ),
+                                      duration: const Duration(seconds: 3),
+                                      leftBarIndicatorColor: Colors.blue[300],
+                                    ).show(context);
+                                  } else {
+                                    signup();
+                                  }
                                 }
                               },
                             ),
