@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/config/size_config.dart';
-import 'package:mygate/screens/splash_screen.dart';
+import 'package:mygate/screens/splashscreen/splash_screen.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 

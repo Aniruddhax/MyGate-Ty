@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/config/size_config.dart';
-import 'package:mygate/screens/Profile%20Page/profile_page.dart';
-import 'package:mygate/screens/login/resilogin.dart';
+import 'package:mygate/screens/Profile%20Page/profilepage.dart';
 import 'package:mygate/screens/login/roleselect.dart';
-import 'package:mygate/screens/splash_screen.dart';
+import 'package:mygate/screens/notice_board/notice_board.dart';
+import 'package:mygate/screens/splashscreen/splash_screen.dart';
 
 class homescreen extends StatefulWidget {
   const homescreen({Key? key}) : super(key: key);
@@ -19,6 +19,8 @@ class homescreen extends StatefulWidget {
 
 class _homescreenState extends State<homescreen> {
   int currentpage = 0;
+
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -97,7 +99,7 @@ class _tab_1State extends State<tab_1> {
           Padding(
             padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 7),
             child: Text(
-              "Room No :- 101",
+              userdata.read('room_no') ?? 'Info not added',
               style: GoogleFonts.nunito(
                 fontSize: SizeConfig.blockSizeVertical * 2.8,
                 fontWeight: FontWeight.w300,
@@ -150,7 +152,7 @@ class _tab_1State extends State<tab_1> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const resilogin()));
+                            builder: (context) => const noticeboard()));
                   },
                   child: Center(
                     child: Container(
@@ -203,61 +205,7 @@ class _tab_1State extends State<tab_1> {
                 SizedBox(
                   height: SizeConfig.screenHeight * 0.03,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const resilogin()));
-                  },
-                  child: Center(
-                    child: Container(
-                        height: SizeConfig.screenHeight * 0.09,
-                        width: SizeConfig.screenWidth * 0.90,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: SizeConfig.blockSizeVertical * 2),
-                              child: Icon(
-                                Icons.info_outline,
-                                size: 32,
-                              ),
-                            ),
-                            SizedBox(
-                              width: SizeConfig.screenWidth * 0.04,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(
-                                  height: SizeConfig.screenHeight * 0.019,
-                                ),
-                                Text(
-                                  "Notice Board",
-                                  style: GoogleFonts.nunito(
-                                    fontSize: SizeConfig.blockSizeVertical * 2,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                Text(
-                                  "Access all important announcements",
-                                  style: GoogleFonts.nunito(
-                                    fontSize:
-                                        SizeConfig.blockSizeVertical * 1.7,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )),
-                  ),
-                )
+                
               ],
             ),
           ))
@@ -326,14 +274,14 @@ class _tab_2State extends State<tab_2> {
                         height: SizeConfig.screenHeight * 0.03,
                       ),
                       Text(
-                        userdata.read('name'),
+                        userdata.read('name') ?? 'Info not added',
                         style: GoogleFonts.nunito(
                           fontSize: SizeConfig.blockSizeVertical * 3.5,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                       Text(
-                        userdata.read('email'),
+                        userdata.read('email') ?? 'Info not added',
                         style: GoogleFonts.nunito(
                             fontSize: SizeConfig.blockSizeVertical * 2.7,
                             fontWeight: FontWeight.w300,
@@ -359,7 +307,7 @@ class _tab_2State extends State<tab_2> {
                         ),
                       ),
                       Text(
-                        userdata.read('roomnumber') ?? 'Info not added',
+                        userdata.read('room_no') ?? 'Info not added',
                         style: GoogleFonts.nunito(
                             fontSize: SizeConfig.blockSizeVertical * 2.7,
                             fontWeight: FontWeight.w300,
@@ -376,7 +324,7 @@ class _tab_2State extends State<tab_2> {
                         ),
                       ),
                       Text(
-                        userdata.read('mobnumber') ?? 'Info not added',
+                        userdata.read('mob_no') ?? 'Info not added',
                         style: GoogleFonts.nunito(
                             fontSize: SizeConfig.blockSizeVertical * 2.7,
                             fontWeight: FontWeight.w300,
@@ -409,10 +357,12 @@ class _tab_2State extends State<tab_2> {
                                     fontWeight: FontWeight.w600,
                                   )),
                             ),
-                            onPressed: () {Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const editprofile()));},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => editprofile()));
+                            },
                           ),
                         ),
                       ),
@@ -425,6 +375,11 @@ class _tab_2State extends State<tab_2> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const roleselect()));
+                            userdata.write('name', null);
+                            userdata.write('email', null);
+                            userdata.write('role', null);
+                            userdata.write('mob_no', null);
+                            userdata.write('room_no', null);
                             userdata.write('isloggedin', false);
                           },
                           icon: Icon(

@@ -7,9 +7,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/config/size_config.dart';
-import 'package:mygate/screens/home_screen.dart';
+import 'package:mygate/screens/homescreen/home_screen.dart';
 import 'package:mygate/screens/login/signup.dart';
-import 'package:mygate/screens/splash_screen.dart';
+import 'package:mygate/screens/splashscreen/splash_screen.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class stafflogin extends StatefulWidget {
@@ -29,7 +29,15 @@ class _staffloginState extends State<stafflogin> {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
     SizeConfig().init(context);
     final userdata = GetStorage();
-    return MaterialApp(
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
             primarySwatch: Colors.cyan,
@@ -234,17 +242,24 @@ class _staffloginState extends State<stafflogin> {
                                         object.get<String>('name');
                                     String? userrole =
                                         object.get<String>('role');
+                                    String? usermob =
+                                        object.get<String>('mob_no');
+                                    String? userroom =
+                                        object.get<String>('room_no');
 
                                     userdata.write('name', username);
                                     userdata.write('email', useremail);
                                     userdata.write('role', userrole);
+                                    userdata.write('mob_no', usermob);
+                                    userdata.write('room_no', userroom);
                                     userdata.write('isloggedin', true);
 
-                                    Navigator.pushReplacement(
+                                    Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                const homescreen()));
+                                            builder: (BuildContext context) =>
+                                                const homescreen()),
+                                        ModalRoute.withName('role_select'));
                                   } else {
                                     Flushbar(
                                       flushbarPosition: FlushbarPosition.TOP,
@@ -308,6 +323,8 @@ class _staffloginState extends State<stafflogin> {
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

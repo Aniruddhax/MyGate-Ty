@@ -5,13 +5,11 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mygate/config/size_config.dart';
-import 'package:mygate/screens/home_screen.dart';
 
-import 'login/roleselect.dart';
+import '../login/roleselect.dart';
 
 class splash extends StatefulWidget {
   const splash({Key? key}) : super(key: key);
@@ -29,23 +27,11 @@ class _splashState extends State<splash> {
       statusBarColor: Colors.transparent,
     ));
 
-    // Timer(
-    //     const Duration(seconds: 3),
-    //     () => Navigator.pushReplacement(context,
-    //         MaterialPageRoute(builder: (context) => const roleselect())));
-final userdata = GetStorage();
-             userdata.writeIfNull('isloggedin', false);
-
-    Future.delayed(const Duration(seconds: 4), () async {
-      userdata.read('isloggedin')
-          ? Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const homescreen()))
-          : Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const roleselect()));
-    });
+    Timer(
+        const Duration(seconds: 4),
+        () => Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const roleselect())));
   }
-
-
 
   @override
   Widget build(BuildContext context) {

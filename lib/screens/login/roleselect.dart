@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mygate/config/size_config.dart';
@@ -8,8 +9,9 @@ import 'package:mygate/screens/login/commlogin.dart';
 import 'package:mygate/screens/login/resilogin.dart';
 import 'package:mygate/screens/login/signup.dart';
 import 'package:mygate/screens/login/stafflogin.dart';
-import 'package:mygate/screens/splash_screen.dart';
+import 'package:mygate/screens/splashscreen/splash_screen.dart';
 
+import '../homescreen/home_screen.dart';
 
 class roleselect extends StatefulWidget {
   const roleselect({Key? key}) : super(key: key);
@@ -19,7 +21,18 @@ class roleselect extends StatefulWidget {
 }
 
 class _roleselectState extends State<roleselect> {
-  
+  @override
+  void initState() {
+    super.initState();
+    final userdata = GetStorage();
+    userdata.writeIfNull('isloggedin', false);
+    Future.delayed(const Duration(seconds: 0), () async {
+      userdata.read('isloggedin')
+          ? Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const homescreen()))
+          : null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
