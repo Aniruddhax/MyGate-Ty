@@ -2,6 +2,7 @@
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/config/size_config.dart';
@@ -203,6 +204,7 @@ class _editprofileState extends State<editprofile> {
                               hintText: user_mobno != null
                                   ? user_mobno
                                   : "Add a Mobile Number"),
+                                  inputFormatters: [LengthLimitingTextInputFormatter(10)],
                         ),
                       ),
                       SizedBox(
