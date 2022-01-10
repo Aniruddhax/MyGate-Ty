@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/screens/Profile%20Page/profilepage.dart';
+import 'package:mygate/screens/complaints/complaints.dart';
 import 'package:mygate/screens/homescreen/home_screen.dart';
 import 'package:mygate/screens/login/commlogin.dart';
 import 'package:mygate/screens/login/resilogin.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         'stafflogin': (context) => const stafflogin(),
         'homescreen': (context) => const homescreen(),
         'editprofile': (context) =>  const editprofile(),
+        'complaints': (context) =>  const complaints(),
       },
       
     );

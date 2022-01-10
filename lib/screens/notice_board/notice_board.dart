@@ -32,6 +32,12 @@ class _noticeboardState extends State<noticeboard> {
               GoogleFonts.nunitoSansTextTheme(Theme.of(context).textTheme)),
       home: Scaffold(
         appBar: AppBar(
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(Icons.arrow_back_ios_new_outlined),
+          ),
           actions: <Widget>[
             IconButton(
                 onPressed: () {
@@ -89,7 +95,7 @@ class _noticeboardState extends State<noticeboard> {
           children: <Widget>[
             Expanded(
                 child: FutureBuilder<List<ParseObject>>(
-                    future: getTodo(),
+                    future: getNotice(),
                     builder: (context, snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:
@@ -213,7 +219,7 @@ class _noticeboardState extends State<noticeboard> {
     );
   }
 
-  Future<List<ParseObject>> getTodo() async {
+  Future<List<ParseObject>> getNotice() async {
     QueryBuilder<ParseObject> queryTodo =
         QueryBuilder<ParseObject>(ParseObject('Notice'));
     final ParseResponse apiResponse = await queryTodo.query();

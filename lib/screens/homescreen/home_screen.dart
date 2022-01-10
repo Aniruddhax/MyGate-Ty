@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/config/size_config.dart';
 import 'package:mygate/screens/Profile%20Page/profilepage.dart';
+import 'package:mygate/screens/complaints/complaints.dart';
 import 'package:mygate/screens/login/roleselect.dart';
 import 'package:mygate/screens/notice_board/notice_board.dart';
 import 'package:mygate/screens/splashscreen/splash_screen.dart';
@@ -190,6 +191,64 @@ class _tab_1State extends State<tab_1> {
                                 ),
                                 Text(
                                   "Access all important announcements",
+                                  style: GoogleFonts.nunito(
+                                    fontSize:
+                                        SizeConfig.blockSizeVertical * 1.7,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: SizeConfig.screenHeight * 0.03,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const complaints()));
+                  },
+                  child: Center(
+                    child: Container(
+                        height: SizeConfig.screenHeight * 0.09,
+                        width: SizeConfig.screenWidth * 0.90,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: SizeConfig.blockSizeVertical * 2),
+                              child: Icon(
+                                Icons.sentiment_dissatisfied_outlined,
+                                size: 32,
+                              ),
+                            ),
+                            SizedBox(
+                              width: SizeConfig.screenWidth * 0.04,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(
+                                  height: SizeConfig.screenHeight * 0.019,
+                                ),
+                                Text(
+                                  "Complaints Section",
+                                  style: GoogleFonts.nunito(
+                                    fontSize: SizeConfig.blockSizeVertical * 2,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Text(
+                                  "Register a Complaint ",
                                   style: GoogleFonts.nunito(
                                     fontSize:
                                         SizeConfig.blockSizeVertical * 1.7,
