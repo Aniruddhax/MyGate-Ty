@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, sized_box_for_whitespace, duplicate_ignore
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
@@ -393,16 +393,16 @@ class _complaintsState extends State<complaints> {
                         fontWeight: FontWeight.bold,
                         fontSize: SizeConfig.blockSizeHorizontal * 4),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
                     subject,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: SizeConfig.blockSizeHorizontal * 4),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
-                    "Raised By $createdBy On $createdAt",
+                    "Complaint Raised By $createdBy On $createdAt",
                     style: TextStyle(
                         fontWeight: FontWeight.w200,
                         fontSize: SizeConfig.blockSizeHorizontal * 3.2),
