@@ -365,7 +365,7 @@ class _complaintsState extends State<complaints> {
     final ParseResponse apiResponse = await queryTodo.query();
 
     if (apiResponse.success && apiResponse.results != null) {
-      return apiResponse.results as List<ParseObject>;
+      return apiResponse.results!.reversed.toList() as List<ParseObject>;
     } else {
       return [];
     }

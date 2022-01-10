@@ -95,7 +95,7 @@ class _noticeboardState extends State<noticeboard> {
           children: <Widget>[
             Expanded(
                 child: FutureBuilder<List<ParseObject>>(
-                    future: getNotice(),
+                    future: getTodo(),
                     builder: (context, snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:
@@ -118,7 +118,7 @@ class _noticeboardState extends State<noticeboard> {
                             );
                           } else {
                             return ListView.builder(
-                              reverse: true,
+                              //reverse: true,
                               controller: _scrollController,
                               padding: EdgeInsets.all(
                                   SizeConfig.blockSizeHorizontal * 3),
@@ -219,13 +219,13 @@ class _noticeboardState extends State<noticeboard> {
     );
   }
 
-  Future<List<ParseObject>> getNotice() async {
+  Future<List<ParseObject>> getTodo() async {
     QueryBuilder<ParseObject> queryTodo =
         QueryBuilder<ParseObject>(ParseObject('Notice'));
     final ParseResponse apiResponse = await queryTodo.query();
 
     if (apiResponse.success && apiResponse.results != null) {
-      return apiResponse.results as List<ParseObject>;
+      return apiResponse.results!.reversed.toList() as List<ParseObject>;
     } else {
       return [];
     }
