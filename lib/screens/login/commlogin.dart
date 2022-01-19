@@ -228,6 +228,7 @@ class _commloginState extends State<commlogin> {
                                     ..whereContains('role', 'Committee')
                                     ..whereContains(
                                         'email', commemail.text.trim())
+                                    
                                     ..whereContains(
                                         'passwd', commpass.text.trim());
                                   final ParseResponse parseResponse =

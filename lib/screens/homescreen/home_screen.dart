@@ -1,7 +1,8 @@
-// ignore_for_file: camel_case_types, prefer_const_constructors
+// ignore_for_file: camel_case_types, prefer_const_constructors, prefer_typing_uninitialized_variables
 
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/config/size_config.dart';
@@ -10,6 +11,8 @@ import 'package:mygate/screens/complaints/complaints.dart';
 import 'package:mygate/screens/login/roleselect.dart';
 import 'package:mygate/screens/notice_board/notice_board.dart';
 import 'package:mygate/screens/splashscreen/splash_screen.dart';
+import 'package:mygate/screens/visitor/VerifyingVisitor.dart';
+import 'package:mygate/screens/visitor/VisitorPage.dart';
 
 class homescreen extends StatefulWidget {
   const homescreen({Key? key}) : super(key: key);
@@ -20,7 +23,6 @@ class homescreen extends StatefulWidget {
 
 class _homescreenState extends State<homescreen> {
   int currentpage = 0;
-
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +77,7 @@ class _tab_1State extends State<tab_1> {
   @override
   Widget build(BuildContext context) {
     final userdata = GetStorage();
+    final role = userdata.read('role');
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
@@ -118,157 +121,115 @@ class _tab_1State extends State<tab_1> {
             ),
           ),
           SizedBox(
-            height: SizeConfig.screenHeight * 0.08,
+            height: SizeConfig.screenHeight * 0.05,
           ),
           Expanded(
-              child: Container(
-            width: SizeConfig.screenWidth,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40))),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: SizeConfig.screenHeight * 0.04,
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 7),
-                  child: Text(
-                    "Available Services :-",
-                    style: GoogleFonts.nunito(
-                      fontSize: SizeConfig.blockSizeVertical * 3,
-                      fontWeight: FontWeight.w500,
+            child: Container(
+              width: SizeConfig.screenWidth,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40))),
+              child: Padding(
+                  padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 2.2),
+                  child: SingleChildScrollView(
+                    child: StaggeredGrid.count(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 22,
+                      mainAxisSpacing: 22,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const noticeboard()));
+                          },
+                          child: dasboardServiesGrid(
+                            title: "Notice Board",
+                            icon: Icons.info_outline,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const complaints()));
+                          },
+                          child: dasboardServiesGrid(
+                            title: "Complaints Section",
+                            icon: Icons.sentiment_dissatisfied_outlined,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            if (role == 'Staff') {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const veryfingVisitor()));
+                            } else {Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const visitorCreating()));}
+                          },
+                          child: dasboardServiesGrid(
+                            title: "Visitor/Guest Management",
+                            icon: Icons.group_outlined,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.screenHeight * 0.03,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const noticeboard()));
-                  },
-                  child: Center(
-                    child: Container(
-                        height: SizeConfig.screenHeight * 0.09,
-                        width: SizeConfig.screenWidth * 0.90,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: SizeConfig.blockSizeVertical * 2),
-                              child: Icon(
-                                Icons.info_outline,
-                                size: 32,
-                              ),
-                            ),
-                            SizedBox(
-                              width: SizeConfig.screenWidth * 0.04,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(
-                                  height: SizeConfig.screenHeight * 0.019,
-                                ),
-                                Text(
-                                  "Notice Board",
-                                  style: GoogleFonts.nunito(
-                                    fontSize: SizeConfig.blockSizeVertical * 2,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                Text(
-                                  "Access all important announcements",
-                                  style: GoogleFonts.nunito(
-                                    fontSize:
-                                        SizeConfig.blockSizeVertical * 1.7,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )),
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.screenHeight * 0.03,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const complaints()));
-                  },
-                  child: Center(
-                    child: Container(
-                        height: SizeConfig.screenHeight * 0.09,
-                        width: SizeConfig.screenWidth * 0.90,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: SizeConfig.blockSizeVertical * 2),
-                              child: Icon(
-                                Icons.sentiment_dissatisfied_outlined,
-                                size: 32,
-                              ),
-                            ),
-                            SizedBox(
-                              width: SizeConfig.screenWidth * 0.04,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(
-                                  height: SizeConfig.screenHeight * 0.019,
-                                ),
-                                Text(
-                                  "Complaints Section",
-                                  style: GoogleFonts.nunito(
-                                    fontSize: SizeConfig.blockSizeVertical * 2,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                Text(
-                                  "Register a Complaint ",
-                                  style: GoogleFonts.nunito(
-                                    fontSize:
-                                        SizeConfig.blockSizeVertical * 1.7,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )),
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.screenHeight * 0.03,
-                ),
-                
-              ],
+                  )),
             ),
-          ))
+          )
         ],
+      ),
+    );
+  }
+}
+
+class dasboardServiesGrid extends StatelessWidget {
+  final title;
+  final icon;
+  const dasboardServiesGrid({
+    Key? key,
+    this.title,
+    this.icon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.grey[200], borderRadius: BorderRadius.circular(13)),
+      child: Padding(
+        padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 2.5),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Icon(
+              icon,
+              size: 50,
+              color: Colors.cyan,
+            ),
+            Divider(
+              thickness: 1,
+            ),
+            Text(
+              title,
+              style: GoogleFonts.nunito(
+                fontSize: SizeConfig.blockSizeVertical * 2.4,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

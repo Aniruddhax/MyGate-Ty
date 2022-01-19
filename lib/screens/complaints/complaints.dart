@@ -72,7 +72,7 @@ class _complaintsState extends State<complaints> {
                           padding: EdgeInsets.only(
                               left: SizeConfig.screenWidth * 0.04),
                           child: Text(
-                            "Unresolved Complaints :-",
+                            "Previous Complaints :-",
                             style: GoogleFonts.nunito(
                               fontSize: SizeConfig.blockSizeVertical * 2.4,
                               fontWeight: FontWeight.w700,
