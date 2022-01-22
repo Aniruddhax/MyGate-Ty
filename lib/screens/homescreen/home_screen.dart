@@ -6,13 +6,15 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/config/size_config.dart';
+import 'package:mygate/screens/Parcel/DeliveryList.dart';
+import 'package:mygate/screens/Parcel/deliveryCreation.dart';
 import 'package:mygate/screens/Profile%20Page/profilepage.dart';
 import 'package:mygate/screens/complaints/complaints.dart';
 import 'package:mygate/screens/login/roleselect.dart';
 import 'package:mygate/screens/notice_board/notice_board.dart';
+import 'package:mygate/screens/payments/paymentCreation.dart';
 import 'package:mygate/screens/splashscreen/splash_screen.dart';
 import 'package:mygate/screens/visitor/VerifyingVisitor.dart';
-import 'package:mygate/screens/visitor/VisitorPage.dart';
 
 class homescreen extends StatefulWidget {
   const homescreen({Key? key}) : super(key: key);
@@ -175,11 +177,49 @@ class _tab_1State extends State<tab_1> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const visitorCreating()));}
+                                          const DeliveryCreating()));}
                           },
                           child: dasboardServiesGrid(
-                            title: "Visitor/Guest Management",
+                            title: "Visitor / Guest Management",
                             icon: Icons.group_outlined,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            if (role == 'Staff') {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const deliveryList()));
+                            } else {Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DeliveryCreating()));}
+                          },
+                          child: dasboardServiesGrid(
+                            title: "Delivery Management",
+                            icon: Icons.local_shipping_outlined,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            if (role == 'Committee') {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const due_Creation()));
+                            } else {Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DeliveryCreating()));}
+                          },
+                          child: dasboardServiesGrid(
+                            title: "Society Dues",
+                            icon: Icons.request_quote_outlined,
                           ),
                         ),
                       ],

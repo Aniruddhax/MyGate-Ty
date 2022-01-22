@@ -252,7 +252,7 @@ class _veryfingVisitorState extends State<veryfingVisitor> {
           ),
           const Spacer(),
           Text(
-            "Enter the Visitor\'s Code to Verify",
+            "Enter the Visitor's Code to Verify",
             textAlign: TextAlign.center,
             style: GoogleFonts.nunito(
               fontSize: SizeConfig.blockSizeVertical * 2.4,

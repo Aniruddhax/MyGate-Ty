@@ -1,6 +1,7 @@
-// ignore_for_file: camel_case_types, sized_box_for_whitespace, duplicate_ignore
+// ignore_for_file: camel_case_types, sized_box_for_whitespace, duplicate_ignore, file_names
 
 import 'package:another_flushbar/flushbar.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,17 +9,25 @@ import 'package:intl/intl.dart';
 import 'package:mygate/config/size_config.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
-class complaints extends StatefulWidget {
-  const complaints({Key? key}) : super(key: key);
+class due_Creation extends StatefulWidget {
+  const due_Creation({Key? key}) : super(key: key);
 
   @override
-  _complaintsState createState() => _complaintsState();
+  _due_CreationState createState() => _due_CreationState();
 }
 
-class _complaintsState extends State<complaints> {
+class _due_CreationState extends State<due_Creation> {
+  @override
+  void initState() {
+    getMemberList(context);
+
+    super.initState();
+  }
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final complaintTitle = TextEditingController();
   final complaintSubject = TextEditingController();
+  List MemberList = [];
   @override
   Widget build(BuildContext context) {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
@@ -39,7 +48,7 @@ class _complaintsState extends State<complaints> {
                 GoogleFonts.nunitoSansTextTheme(Theme.of(context).textTheme)),
         home: Scaffold(
           appBar: AppBar(
-            title: const Text("Complaints",
+            title: const Text("Society Dues",
                 style: TextStyle(
                   fontSize: 25,
                 )),
@@ -79,7 +88,7 @@ class _complaintsState extends State<complaints> {
                           padding: EdgeInsets.only(
                               left: SizeConfig.screenWidth * 0.04),
                           child: Text(
-                            "Previous Complaints :-",
+                            "Pending Dues :-",
                             style: GoogleFonts.nunito(
                               fontSize: SizeConfig.blockSizeVertical * 2.4,
                               fontWeight: FontWeight.w700,
@@ -91,7 +100,7 @@ class _complaintsState extends State<complaints> {
                         height: SizeConfig.screenHeight * 0.009,
                       ),
                       Container(
-                          height: SizeConfig.screenHeight * 0.32,
+                          height: SizeConfig.screenHeight * 0.20,
                           width: SizeConfig.screenWidth,
                           child: FutureBuilder<List<ParseObject>>(
                               future: getcomplaint(),
@@ -191,48 +200,63 @@ class _complaintsState extends State<complaints> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: SizeConfig.blockSizeHorizontal * 8,
-                                  right: SizeConfig.blockSizeHorizontal * 8),
-                              child: TextFormField(
-                                controller: complaintTitle,
-                                keyboardType: TextInputType.emailAddress,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please Enter a Title for the Complaint';
-                                  }
-
-                                  return null;
-                                },
-                                onSaved: (value) {
-                                  complaintTitle.text = value!;
-                                },
-                                decoration: InputDecoration(
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: Colors.red),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: Colors.cyan),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: Colors.red),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  hintText: "Title of the Complaint",
-                                ),
-                              ),
-                            ),
                             SizedBox(
                               height: SizeConfig.screenHeight * 0.02,
+                            ),
+                            DropdownButtonFormField2(
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.zero,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.red),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                              ),
+                              isExpanded: true,
+                              hint: Text(
+                                'Select Parcel Type',
+                                style: GoogleFonts.nunito(
+                                  fontSize: SizeConfig.blockSizeVertical * 2,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              icon: const Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.black45,
+                              ),
+                              iconSize: SizeConfig.blockSizeVertical * 5,
+                              buttonHeight: SizeConfig.screenHeight * 0.08,
+                              buttonPadding:
+                                  const EdgeInsets.only(left: 20, right: 10),
+                              dropdownDecoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              items: MemberList.map((item) =>
+                                  DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: GoogleFonts.nunito(
+                                        fontSize:
+                                            SizeConfig.blockSizeVertical * 2,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  )).toList(),
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'Please select Parcel Type';
+                                }
+                              },
+                              onChanged: (value) {
+                                var TypeSelected = value.toString();
+                              },
+                              onSaved: (value) {
+                                var TypeSelected = value.toString();
+                              },
                             ),
                             Padding(
                               padding: EdgeInsets.only(
@@ -382,6 +406,22 @@ class _complaintsState extends State<complaints> {
     }
   }
 
+  Future<List<ParseObject>> getMemberList(BuildContext context) async {
+    QueryBuilder<ParseObject> queryTodo =
+        QueryBuilder<ParseObject>(ParseObject('MyGate'));
+    final ParseResponse apiResponse = await queryTodo.query();
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (var o in apiResponse.results!) {
+        final object = o as ParseObject;
+        MemberList.add(object.get<String>('name'));
+      }
+      return apiResponse.results!.reversed.toList() as List<ParseObject>;
+    } else {
+      return [];
+    }
+  }
+
   Widget _complaintCard(
       {required String title,
       required String subject,
@@ -422,8 +462,7 @@ class _complaintsState extends State<complaints> {
                   backgroundColor: Colors.red,
                 ),
                 onPressed: () async {
-                  var todo = ParseObject('Complaints')..objectId = id;
-                  await todo.delete();
+                  print(MemberList);
                 },
                 child: Text(
                   " Complaint Resolved ",
