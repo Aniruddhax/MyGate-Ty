@@ -63,7 +63,6 @@ class _visitorCreatingState extends State<visitorCreating> {
               },
               child: const Icon(Icons.arrow_back_ios_new_outlined),
             ),
-            
           ),
           resizeToAvoidBottomInset: false,
           body: SingleChildScrollView(
@@ -489,7 +488,7 @@ class _visitorCreatingState extends State<visitorCreating> {
                     saveAndShare(image);
                   },
                   child: const Text(
-                    "MyGate",
+                    "Share",
                   ),
                 ));
           });

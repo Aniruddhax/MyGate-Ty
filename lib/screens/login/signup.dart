@@ -1,7 +1,6 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
 import 'package:another_flushbar/flushbar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/config/size_config.dart';

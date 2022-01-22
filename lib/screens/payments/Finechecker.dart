@@ -2,18 +2,20 @@
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:mygate/config/size_config.dart';
 
-class deliveryList extends StatefulWidget {
-  const deliveryList({Key? key}) : super(key: key);
+class Fine_List extends StatefulWidget {
+  const Fine_List({Key? key}) : super(key: key);
 
   @override
-  _deliveryListState createState() => _deliveryListState();
+  _Fine_ListState createState() => _Fine_ListState();
 }
 
-class _deliveryListState extends State<deliveryList> {
+class _Fine_ListState extends State<Fine_List> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,7 +43,7 @@ class _deliveryListState extends State<deliveryList> {
           elevation: 0,
           centerTitle: true,
           title: Text(
-            "Delivery Management",
+            "Society Dues",
             style: GoogleFonts.nunito(
               fontSize: SizeConfig.blockSizeVertical * 3,
               fontWeight: FontWeight.w500,
@@ -52,6 +54,23 @@ class _deliveryListState extends State<deliveryList> {
           padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
           child: Column(
             children: <Widget>[
+              SizedBox(
+                height: SizeConfig.screenHeight * 0.01,
+              ),
+              Container(
+                height: SizeConfig.screenHeight * 0.04,
+                width: SizeConfig.screenWidth,
+                child: Padding(
+                  padding: EdgeInsets.only(left: SizeConfig.screenWidth * 0.02),
+                  child: Text(
+                    "Issued Fines :-",
+                    style: GoogleFonts.nunito(
+                      fontSize: SizeConfig.blockSizeVertical * 2.4,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
               Expanded(
                   child: ListBuilder(
                 future: getList,
@@ -64,8 +83,12 @@ class _deliveryListState extends State<deliveryList> {
   }
 
   Future<List<ParseObject>> getList() async {
+    final userdata = GetStorage();
+    String Finecheck = userdata.read('name');
+
     QueryBuilder<ParseObject> queryTodo =
-        QueryBuilder<ParseObject>(ParseObject('Parcel'));
+        QueryBuilder<ParseObject>(ParseObject('Dues'));
+    queryTodo.whereContains('Fine_to', Finecheck);
     final ParseResponse apiResponse = await queryTodo.query();
 
     if (apiResponse.success && apiResponse.results != null) {
@@ -116,11 +139,13 @@ class ListBuilder extends StatelessWidget {
                     //*************************************
                     //Get Parse Object Values
                     final varTodo = snapshot.data![index];
-                    final Name = varTodo.get<String>('AddedBy')!;
-                    final Type = varTodo.get<String>('type')!;
-                    final time = varTodo.get<String>('time')!;
-                    final ObjectId = varTodo.get<String>('objectId')!;
-                    final room_no = varTodo.get<String>('roomno')!;
+                    final fine_to = varTodo.get<String>('Fine_to')!;
+                    final Charge = varTodo.get<String>('Charge')!;
+                    final varcreatedAt = varTodo.get<DateTime>('createdAt')!;
+                    final addedby = varTodo.get<String>('Addedby')!;
+                    final ObjId = varTodo.get<String>('objectId')!;
+                    String createdat =
+                        DateFormat.yMMMd('en_US').format(varcreatedAt);
 
                     //*************************************
 
@@ -140,7 +165,7 @@ class ListBuilder extends StatelessWidget {
                                   height: SizeConfig.screenHeight * 0.008,
                                 ),
                                 Text(
-                                  "Name :- $Name \nFlat Number :-$room_no\nArriving Time :- $time",
+                                  Charge,
                                   //overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -150,21 +175,13 @@ class ListBuilder extends StatelessWidget {
                                 SizedBox(
                                   height: SizeConfig.screenHeight * 0.008,
                                 ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical:
-                                          SizeConfig.blockSizeVertical * 1),
-                                  width: SizeConfig.screenWidth * 0.28,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Type == "Food Delivery"
-                                          ? Colors.red[300]
-                                          : Colors.amber),
-                                  child: Center(
-                                    child: Text(
-                                      Type,
-                                    ),
-                                  ),
+                                Text(
+                                  "Fine Issued By $addedby on $createdat",
+                                  //overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w200,
+                                      fontSize:
+                                          SizeConfig.blockSizeHorizontal * 3.5),
                                 ),
                                 SizedBox(
                                   height: SizeConfig.screenHeight * 0.008,
@@ -175,31 +192,6 @@ class ListBuilder extends StatelessWidget {
                               ],
                             ),
                           ),
-                          IconButton(
-                              onPressed: () async {
-                                try {
-                                  var todo = ParseObject('Parcel')
-                                    ..objectId = ObjectId;
-                                  await todo.delete();
-                                } finally {
-                                  Flushbar(
-                                    flushbarPosition: FlushbarPosition.TOP,
-                                    flushbarStyle: FlushbarStyle.GROUNDED,
-                                    message: "Request Deleted",
-                                    icon: Icon(
-                                      Icons.info_outline,
-                                      size: 28.0,
-                                      color: Colors.blue[300],
-                                    ),
-                                    duration: const Duration(seconds: 3),
-                                    leftBarIndicatorColor: Colors.blue[300],
-                                  ).show(context);
-                                }
-                              },
-                              icon: Icon(
-                                Icons.clear,
-                                size: SizeConfig.blockSizeVertical * 4,
-                              )),
                         ],
                       ),
                     );

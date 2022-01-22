@@ -1,6 +1,7 @@
-// ignore_for_file: camel_case_types, sized_box_for_whitespace, duplicate_ignore, file_names
+// ignore_for_file: camel_case_types, sized_box_for_whitespace, duplicate_ignore, file_names, non_constant_identifier_names
 
 import 'package:another_flushbar/flushbar.dart';
+import 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -27,7 +28,15 @@ class _due_CreationState extends State<due_Creation> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final complaintTitle = TextEditingController();
   final complaintSubject = TextEditingController();
+  final List<String> ChargeList = [
+    'Late Maintenance Payment Fine - Rs.200',
+    'Damage To Society Common Areas - Rs.400',
+    'Not Adhering To society Rules - Rs.500',
+  ];
   List MemberList = [];
+  String ChargeSelected = '';
+  String MemberSelected = '';
+  var MemberFineCheck = '';
   @override
   Widget build(BuildContext context) {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
@@ -99,20 +108,52 @@ class _due_CreationState extends State<due_Creation> {
                       SizedBox(
                         height: SizeConfig.screenHeight * 0.009,
                       ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: SizeConfig.blockSizeVertical * 5,
+                            right: SizeConfig.blockSizeVertical * 5),
+                        child: CustomSearchableDropDown(
+                          dropdownItemStyle: GoogleFonts.nunito(
+                            fontSize: SizeConfig.blockSizeVertical * 2,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          dropdownHintText: 'Search For Name Here... ',
+                          items: MemberList,
+                          label: 'Select to Search Members',
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.cyan),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          prefixIcon: const Icon(Icons.search),
+                          dropDownMenuItems: MemberList,
+                          onChanged: (value) {
+                            if (value != null) {
+                              setState(() {
+                                MemberFineCheck = value;
+                              });
+                            } else {
+                              MemberFineCheck = '';
+                            }
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: SizeConfig.screenHeight * 0.013,
+                      ),
                       Container(
                           height: SizeConfig.screenHeight * 0.20,
                           width: SizeConfig.screenWidth,
                           child: FutureBuilder<List<ParseObject>>(
-                              future: getcomplaint(),
+                              future: getMemberFine(Member: MemberFineCheck),
                               builder: (context, snapshot) {
                                 switch (snapshot.connectionState) {
-                                  case ConnectionState.none:
                                   case ConnectionState.waiting:
                                     return const Center(
                                       child: SizedBox(
-                                          width: 100,
-                                          height: 100,
-                                          child: CircularProgressIndicator()),
+                                        width: 50,
+                                        height: 50,
+                                        child: CircularProgressIndicator(),
+                                      ),
                                     );
                                   default:
                                     if (snapshot.hasError) {
@@ -134,36 +175,41 @@ class _due_CreationState extends State<due_Creation> {
                                           //*************************************
                                           //Get Parse Object Values
                                           final varTodo = snapshot.data![index];
-                                          final varTitle =
-                                              varTodo.get<String>('title')!;
-                                          final varcontent =
-                                              varTodo.get<String>('subject')!;
+                                          final fine_to =
+                                              varTodo.get<String>('Fine_to')!;
+                                          final Charge =
+                                              varTodo.get<String>('Charge')!;
                                           final varcreatedAt = varTodo
                                               .get<DateTime>('createdAt')!;
                                           String createdat =
                                               DateFormat.yMMMd('en_US')
                                                   .format(varcreatedAt);
-                                          final varCreatedBy =
-                                              varTodo.get<String>('CreteadBy')!;
-
+                                          final addedby =
+                                              varTodo.get<String>('Addedby')!;
                                           final ObjId =
                                               varTodo.get<String>('objectId')!;
 
                                           //*************************************
 
                                           return _complaintCard(
-                                              title: varTitle,
-                                              subject: varcontent,
-                                              createdBy: varCreatedBy,
                                               createdAt: createdat,
-                                              id: ObjId);
+                                              fineCharge: Charge,
+                                              createdBy: addedby,
+                                              id: ObjId,
+                                              fine_to: fine_to);
                                         },
                                       );
                                     }
                                 }
                               })),
                       SizedBox(
-                        height: SizeConfig.screenHeight * 0.015,
+                        height: SizeConfig.screenHeight * 0.02,
+                      ),
+                      const Divider(
+                        thickness: 3,
+                      ),
+                      SizedBox(
+                        height: SizeConfig.screenHeight * 0.02,
                       ),
                       Container(
                         height: SizeConfig.screenHeight * 0.04,
@@ -172,7 +218,7 @@ class _due_CreationState extends State<due_Creation> {
                           padding: EdgeInsets.only(
                               left: SizeConfig.screenWidth * 0.04),
                           child: Text(
-                            "Raise a Complaint",
+                            "Issue a Fine",
                             style: GoogleFonts.nunito(
                               fontSize: SizeConfig.blockSizeVertical * 2.4,
                               fontWeight: FontWeight.w700,
@@ -183,17 +229,7 @@ class _due_CreationState extends State<due_Creation> {
                       SizedBox(
                         height: SizeConfig.screenHeight * 0.02,
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: SizeConfig.blockSizeHorizontal * 8),
-                        child: Text(
-                          "Title",
-                          style: GoogleFonts.nunito(
-                            fontSize: SizeConfig.blockSizeVertical * 2.5,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
+
                       Form(
                         autovalidateMode: AutovalidateMode.disabled,
                         key: _formKey,
@@ -203,111 +239,131 @@ class _due_CreationState extends State<due_Creation> {
                             SizedBox(
                               height: SizeConfig.screenHeight * 0.02,
                             ),
-                            DropdownButtonFormField2(
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.zero,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.red),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                              isExpanded: true,
-                              hint: Text(
-                                'Select Parcel Type',
-                                style: GoogleFonts.nunito(
-                                  fontSize: SizeConfig.blockSizeVertical * 2,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              icon: const Icon(
-                                Icons.arrow_drop_down,
-                                color: Colors.black45,
-                              ),
-                              iconSize: SizeConfig.blockSizeVertical * 5,
-                              buttonHeight: SizeConfig.screenHeight * 0.08,
-                              buttonPadding:
-                                  const EdgeInsets.only(left: 20, right: 10),
-                              dropdownDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              items: MemberList.map((item) =>
-                                  DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                      item,
-                                      style: GoogleFonts.nunito(
-                                        fontSize:
-                                            SizeConfig.blockSizeVertical * 2,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  )).toList(),
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'Please select Parcel Type';
-                                }
-                              },
-                              onChanged: (value) {
-                                var TypeSelected = value.toString();
-                              },
-                              onSaved: (value) {
-                                var TypeSelected = value.toString();
-                              },
-                            ),
                             Padding(
                               padding: EdgeInsets.only(
-                                  left: SizeConfig.blockSizeHorizontal * 8),
-                              child: Text(
-                                "Subject",
-                                style: GoogleFonts.nunito(
-                                  fontSize: SizeConfig.blockSizeVertical * 2.5,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: SizeConfig.blockSizeHorizontal * 8,
-                                  right: SizeConfig.blockSizeHorizontal * 8),
-                              child: TextFormField(
-                                controller: complaintSubject,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return ("Please Enter a Subject for the Complaint");
-                                  }
-                                },
-                                onSaved: (value) {
-                                  complaintSubject.text = value!;
-                                },
+                                  left: SizeConfig.screenHeight * 0.05,
+                                  right: SizeConfig.screenHeight * 0.05),
+                              child: DropdownButtonFormField2(
                                 decoration: InputDecoration(
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: Colors.red),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: Colors.cyan),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(16),
+                                  contentPadding: EdgeInsets.zero,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
                                   ),
                                   errorBorder: OutlineInputBorder(
                                     borderSide:
                                         const BorderSide(color: Colors.red),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  hintText: "Subject For the Complaint",
                                 ),
+                                isExpanded: true,
+                                hint: Text(
+                                  'Select Charge Type',
+                                  style: GoogleFonts.nunito(
+                                    fontSize: SizeConfig.blockSizeVertical * 2,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                icon: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.black45,
+                                ),
+                                iconSize: SizeConfig.blockSizeVertical * 5,
+                                buttonHeight: SizeConfig.screenHeight * 0.08,
+                                buttonPadding:
+                                    const EdgeInsets.only(left: 20, right: 10),
+                                dropdownDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                items: ChargeList.map((item) =>
+                                    DropdownMenuItem<String>(
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: GoogleFonts.nunito(
+                                          fontSize:
+                                              SizeConfig.blockSizeVertical * 2,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    )).toList(),
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'Please select Parcel Type';
+                                  }
+                                },
+                                onChanged: (value) {
+                                  ChargeSelected = value.toString();
+                                },
+                                onSaved: (value) {
+                                  ChargeSelected = value.toString();
+                                },
                               ),
                             ),
                             SizedBox(
-                              height: SizeConfig.screenHeight * 0.03,
+                              height: SizeConfig.screenHeight * 0.02,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: SizeConfig.screenHeight * 0.05,
+                                  right: SizeConfig.screenHeight * 0.05),
+                              child: DropdownButtonFormField2(
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.zero,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Colors.red),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                                isExpanded: true,
+                                hint: Text(
+                                  'Select Member to Issue',
+                                  style: GoogleFonts.nunito(
+                                    fontSize: SizeConfig.blockSizeVertical * 2,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                icon: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.black45,
+                                ),
+                                iconSize: SizeConfig.blockSizeVertical * 5,
+                                buttonHeight: SizeConfig.screenHeight * 0.08,
+                                buttonPadding:
+                                    const EdgeInsets.only(left: 20, right: 10),
+                                dropdownDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                items: MemberList.map((item) =>
+                                    DropdownMenuItem<String>(
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: GoogleFonts.nunito(
+                                          fontSize:
+                                              SizeConfig.blockSizeVertical * 2,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    )).toList(),
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'Please select Parcel Time';
+                                  }
+                                },
+                                onChanged: (value) {
+                                  MemberSelected = value.toString();
+                                },
+                                onSaved: (value) {
+                                  MemberSelected = value.toString();
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: SizeConfig.screenHeight * 0.04,
                             ),
                             Center(
                               child: ClipRRect(
@@ -330,7 +386,7 @@ class _due_CreationState extends State<due_Creation> {
                                                       2),
                                         )),
                                     child: Center(
-                                      child: Text("Raise",
+                                      child: Text("Issue",
                                           style: GoogleFonts.nunito(
                                             fontSize:
                                                 SizeConfig.blockSizeVertical *
@@ -340,36 +396,39 @@ class _due_CreationState extends State<due_Creation> {
                                     ),
                                     onPressed: () async {
                                       if (_formKey.currentState!.validate()) {
-                                        final userdata = GetStorage();
-                                        String complaintcreator =
-                                            userdata.read('name');
                                         try {
-                                          var firstObject =
-                                              ParseObject('Complaints');
-                                          firstObject.set('title',
-                                              complaintTitle.text.trim());
-                                          firstObject.set('subject',
-                                              complaintSubject.text.trim());
-                                          firstObject.set('CreteadBy',
-                                              complaintcreator.trim());
+                                          final userdata = GetStorage();
+                                          String Fine_issued =
+                                              userdata.read('name');
+                                          var firstObject = ParseObject('Dues');
+                                          firstObject.set(
+                                              'Addedby', Fine_issued.trim());
+                                          firstObject.set(
+                                              'Fine_to', MemberSelected.trim());
+                                          firstObject.set(
+                                              'Charge', ChargeSelected.trim());
                                           await firstObject.save();
                                         } finally {
-                                          Flushbar(
-                                            flushbarPosition:
-                                                FlushbarPosition.TOP,
-                                            flushbarStyle:
-                                                FlushbarStyle.GROUNDED,
-                                            message: "Complaint Raised",
-                                            icon: Icon(
-                                              Icons.info_outline,
-                                              size: 28.0,
-                                              color: Colors.blue[300],
-                                            ),
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            leftBarIndicatorColor:
-                                                Colors.blue[300],
-                                          ).show(context);
+                                          setState(() {
+                                            ChargeSelected = '';
+                                            MemberSelected = '';
+                                            Flushbar(
+                                              flushbarPosition:
+                                                  FlushbarPosition.TOP,
+                                              flushbarStyle:
+                                                  FlushbarStyle.GROUNDED,
+                                              message: "Fine Issued",
+                                              icon: Icon(
+                                                Icons.info_outline,
+                                                size: 28.0,
+                                                color: Colors.blue[300],
+                                              ),
+                                              duration:
+                                                  const Duration(seconds: 3),
+                                              leftBarIndicatorColor:
+                                                  Colors.blue[300],
+                                            ).show(context);
+                                          });
                                         }
                                       }
                                     },
@@ -396,7 +455,20 @@ class _due_CreationState extends State<due_Creation> {
 
   Future<List<ParseObject>> getcomplaint() async {
     QueryBuilder<ParseObject> queryTodo =
-        QueryBuilder<ParseObject>(ParseObject('Complaints'));
+        QueryBuilder<ParseObject>(ParseObject('Dues'));
+    final ParseResponse apiResponse = await queryTodo.query();
+
+    if (apiResponse.success && apiResponse.results != null) {
+      return apiResponse.results!.reversed.toList() as List<ParseObject>;
+    } else {
+      return [];
+    }
+  }
+
+  Future<List<ParseObject>> getMemberFine({required String Member}) async {
+    QueryBuilder<ParseObject> queryTodo =
+        QueryBuilder<ParseObject>(ParseObject('Dues'));
+    queryTodo.whereContains('Fine_to', Member);
     final ParseResponse apiResponse = await queryTodo.query();
 
     if (apiResponse.success && apiResponse.results != null) {
@@ -423,8 +495,8 @@ class _due_CreationState extends State<due_Creation> {
   }
 
   Widget _complaintCard(
-      {required String title,
-      required String subject,
+      {required String fine_to,
+      required String fineCharge,
       required String createdBy,
       required String createdAt,
       required String id}) {
@@ -434,49 +506,62 @@ class _due_CreationState extends State<due_Creation> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
-        padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 5),
+        padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3.5),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              title,
+              fine_to,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: SizeConfig.blockSizeHorizontal * 4),
             ),
+            Text(
+              fineCharge,
+              style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: SizeConfig.blockSizeHorizontal * 3.5),
+            ),
             SizedBox(
               height: SizeConfig.screenHeight * 0.015,
             ),
-            Text(
-              subject,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: SizeConfig.blockSizeHorizontal * 3.5),
-            ),
-            const Spacer(),
             Align(
               alignment: Alignment.bottomRight,
               child: TextButton(
                 style: TextButton.styleFrom(
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.green,
                 ),
                 onPressed: () async {
-                  print(MemberList);
+                  try {
+                    var todo = ParseObject('Dues')..objectId = id;
+                    await todo.delete();
+                  } finally {
+                    setState(() {});
+                    Flushbar(
+                      flushbarPosition: FlushbarPosition.TOP,
+                      flushbarStyle: FlushbarStyle.GROUNDED,
+                      message: "Fine Paid",
+                      icon: Icon(
+                        Icons.info_outline,
+                        size: 28.0,
+                        color: Colors.blue[300],
+                      ),
+                      duration: const Duration(seconds: 3),
+                      leftBarIndicatorColor: Colors.blue[300],
+                    ).show(context);
+                  }
                 },
                 child: Text(
-                  " Complaint Resolved ",
+                  "Fine Paid",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: SizeConfig.blockSizeHorizontal * 3.5),
                 ),
               ),
             ),
-            SizedBox(
-              height: SizeConfig.screenHeight * 0.008,
-            ),
             Text(
-              "Complaint Raised By $createdBy On $createdAt",
+              "Fine Issued by $createdBy On $createdAt",
               style: TextStyle(
                   fontWeight: FontWeight.w200,
                   fontSize: SizeConfig.blockSizeHorizontal * 3.2),

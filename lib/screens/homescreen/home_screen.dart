@@ -12,6 +12,7 @@ import 'package:mygate/screens/Profile%20Page/profilepage.dart';
 import 'package:mygate/screens/complaints/complaints.dart';
 import 'package:mygate/screens/login/roleselect.dart';
 import 'package:mygate/screens/notice_board/notice_board.dart';
+import 'package:mygate/screens/payments/Finechecker.dart';
 import 'package:mygate/screens/payments/paymentCreation.dart';
 import 'package:mygate/screens/splashscreen/splash_screen.dart';
 import 'package:mygate/screens/visitor/VerifyingVisitor.dart';
@@ -215,7 +216,7 @@ class _tab_1State extends State<tab_1> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const DeliveryCreating()));}
+                                          const Fine_List()));}
                           },
                           child: dasboardServiesGrid(
                             title: "Society Dues",

@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, sized_box_for_whitespace, duplicate_ignore
+// ignore_for_file: camel_case_types, sized_box_for_whitespace, duplicate_ignore, non_constant_identifier_names
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
@@ -411,7 +411,7 @@ class _complaintsState extends State<complaints> {
             Text(
               subject,
               style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.normal,
                   fontSize: SizeConfig.blockSizeHorizontal * 3.5),
             ),
             const Spacer(),
@@ -422,8 +422,26 @@ class _complaintsState extends State<complaints> {
                   backgroundColor: Colors.red,
                 ),
                 onPressed: () async {
-                  var todo = ParseObject('Complaints')..objectId = id;
-                  await todo.delete();
+                  try {
+                    var todo = ParseObject('Complaints')..objectId = id;
+                    await todo.delete();
+                    
+                  } finally {
+                    setState(() {});
+                    Flushbar(
+                      flushbarPosition: FlushbarPosition.TOP,
+                      flushbarStyle: FlushbarStyle.GROUNDED,
+                      message:
+                          "Complaint Resolved",
+                      icon: Icon(
+                        Icons.info_outline,
+                        size: 28.0,
+                        color: Colors.blue[300],
+                      ),
+                      duration: const Duration(seconds: 3),
+                      leftBarIndicatorColor: Colors.blue[300],
+                    ).show(context);
+                  }
                 },
                 child: Text(
                   " Complaint Resolved ",
