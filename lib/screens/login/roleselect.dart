@@ -104,7 +104,7 @@ class _roleselectState extends State<roleselect> {
                                   vertical: SizeConfig.blockSizeVertical * 2),
                             )),
                         child: Center(
-                          child: Text("Residential Member",
+                          child: Text("Committee Member",
                               style: GoogleFonts.nunito(
                                 fontSize: SizeConfig.blockSizeVertical * 2.4,
                                 fontWeight: FontWeight.w600,
@@ -114,7 +114,7 @@ class _roleselectState extends State<roleselect> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const resilogin()));
+                                  builder: (context) => const commlogin()));
                         },
                       ),
                     ),
@@ -140,7 +140,7 @@ class _roleselectState extends State<roleselect> {
                                   vertical: SizeConfig.blockSizeVertical * 2),
                             )),
                         child: Center(
-                          child: Text("Committee Member",
+                          child: Text("Residential Member",
                               style: GoogleFonts.nunito(
                                 fontSize: SizeConfig.blockSizeVertical * 2.4,
                                 fontWeight: FontWeight.w600,
@@ -150,7 +150,7 @@ class _roleselectState extends State<roleselect> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const commlogin()));
+                                  builder: (context) => const resilogin()));
                         },
                       ),
                     ),

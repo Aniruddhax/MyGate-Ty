@@ -1,19 +1,17 @@
-// ignore_for_file: camel_case_types, file_names, prefer_typing_uninitialized_variables, non_constant_identifier_names
-
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:mygate/config/size_config.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
-class deliveryList extends StatefulWidget {
-  const deliveryList({Key? key}) : super(key: key);
+class check_allottment extends StatefulWidget {
+  check_allottment({Key? key}) : super(key: key);
 
   @override
-  _deliveryListState createState() => _deliveryListState();
+  _check_allottmentState createState() => _check_allottmentState();
 }
 
-class _deliveryListState extends State<deliveryList> {
+class _check_allottmentState extends State<check_allottment> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,30 +22,6 @@ class _deliveryListState extends State<deliveryList> {
           textTheme:
               GoogleFonts.nunitoSansTextTheme(Theme.of(context).textTheme)),
       home: Scaffold(
-        appBar: AppBar(
-          leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: const Icon(Icons.arrow_back_ios_new_outlined),
-          ),
-          actions: <Widget>[
-            IconButton(
-                onPressed: () {
-                  setState(() {});
-                },
-                icon: const Icon(Icons.refresh))
-          ],
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-            "Delivery Management",
-            style: GoogleFonts.nunito(
-              fontSize: SizeConfig.blockSizeVertical * 3,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
         body: Padding(
           padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
           child: Column(
@@ -65,11 +39,12 @@ class _deliveryListState extends State<deliveryList> {
 
   Future<List<ParseObject>> getList() async {
     QueryBuilder<ParseObject> queryTodo =
-        QueryBuilder<ParseObject>(ParseObject('Parcel'));
+        QueryBuilder<ParseObject>(ParseObject('Parking'));
+    queryTodo.orderByAscending('Spot');
     final ParseResponse apiResponse = await queryTodo.query();
 
     if (apiResponse.success && apiResponse.results != null) {
-      return apiResponse.results!.reversed.toList() as List<ParseObject>;
+      return apiResponse.results!.toList() as List<ParseObject>;
     } else {
       return [];
     }
@@ -114,11 +89,10 @@ class ListBuilder extends StatelessWidget {
                   //*************************************
                   //Get Parse Object Values
                   final varTodo = snapshot.data![index];
-                  final Name = varTodo.get<String>('AddedBy')!;
-                  final Type = varTodo.get<String>('type')!;
-                  final time = varTodo.get<String>('time')!;
-                  final ObjectId = varTodo.get<String>('objectId')!;
-                  final room_no = varTodo.get<String>('roomno');
+                  final Name = varTodo.get<String>('to');
+                  final Type = varTodo.get<String>('Type');
+                  final room_no = varTodo.get<String>('Room_no');
+                  final spot = varTodo.get<String>('spot');
 
                   //*************************************
 
@@ -137,8 +111,28 @@ class ListBuilder extends StatelessWidget {
                               SizedBox(
                                 height: SizeConfig.screenHeight * 0.008,
                               ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Name :- ",
+                                    //overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize:
+                                            SizeConfig.blockSizeHorizontal * 4),
+                                  ),
+                                  Text(
+                                    Name ?? "Spot Not Allotted",
+                                    //overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize:
+                                            SizeConfig.blockSizeHorizontal * 4),
+                                  ),
+                                ],
+                              ),
                               Text(
-                                "Name :- $Name",
+                                "Parking Spot :- $spot",
                                 //overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -156,7 +150,9 @@ class ListBuilder extends StatelessWidget {
                                             SizeConfig.blockSizeHorizontal * 4),
                                   ),
                                   Text(
-                                    room_no ?? 'Info not added',
+                                    Name == null
+                                        ? "Spot Not Allotted"
+                                        : "Info Not Added",
                                     //overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontWeight: FontWeight.normal,
@@ -164,14 +160,6 @@ class ListBuilder extends StatelessWidget {
                                             SizeConfig.blockSizeHorizontal * 4),
                                   ),
                                 ],
-                              ),
-                              Text(
-                                "Arriving Time :- $time",
-                                //overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize:
-                                        SizeConfig.blockSizeHorizontal * 4),
                               ),
                               SizedBox(
                                 height: SizeConfig.screenHeight * 0.008,
@@ -182,12 +170,12 @@ class ListBuilder extends StatelessWidget {
                                 width: SizeConfig.screenWidth * 0.28,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
-                                    color: Type == "Food Delivery"
-                                        ? Colors.red[300]
+                                    color: Type == null
+                                        ? Colors.green[200]
                                         : Colors.amber),
                                 child: Center(
                                   child: Text(
-                                    Type,
+                                    Type ?? "Spot Not Allotted",
                                   ),
                                 ),
                               ),
@@ -200,31 +188,6 @@ class ListBuilder extends StatelessWidget {
                             ],
                           ),
                         ),
-                        IconButton(
-                            onPressed: () async {
-                              try {
-                                var todo = ParseObject('Parcel')
-                                  ..objectId = ObjectId;
-                                await todo.delete();
-                              } finally {
-                                Flushbar(
-                                  flushbarPosition: FlushbarPosition.TOP,
-                                  flushbarStyle: FlushbarStyle.GROUNDED,
-                                  message: "Request Deleted",
-                                  icon: Icon(
-                                    Icons.info_outline,
-                                    size: 28.0,
-                                    color: Colors.blue[300],
-                                  ),
-                                  duration: const Duration(seconds: 3),
-                                  leftBarIndicatorColor: Colors.blue[300],
-                                ).show(context);
-                              }
-                            },
-                            icon: Icon(
-                              Icons.clear,
-                              size: SizeConfig.blockSizeVertical * 4,
-                            )),
                       ],
                     ),
                   );

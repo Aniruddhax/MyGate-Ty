@@ -1,38 +1,40 @@
-// ignore: file_names
-// ignore_for_file: camel_case_types, sized_box_for_whitespace, duplicate_ignore, file_names, non_constant_identifier_names
+import 'dart:async';
 
 import 'package:another_flushbar/flushbar.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
-
+import 'package:lottie/lottie.dart';
 import 'package:mygate/config/size_config.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
-class DeliveryCreating extends StatefulWidget {
-  const DeliveryCreating({Key? key}) : super(key: key);
+class request_allotment extends StatefulWidget {
+  request_allotment({Key? key}) : super(key: key);
 
   @override
-  _DeliveryCreatingState createState() => _DeliveryCreatingState();
+  _request_allotmentState createState() => _request_allotmentState();
 }
 
-class _DeliveryCreatingState extends State<DeliveryCreating> {
+class _request_allotmentState extends State<request_allotment> {
+  @override
+  void initState() {
+    //etMemberList(context);
+    super.initState();
+    Timer.run(() => getSpotList(context));
+  }
+
+  List ParkingSpotList = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final ParcelType = TextEditingController();
-  final ParcelTime = TextEditingController();
+
   String TypeSelected = '';
-  String TimeSelected = '';
-  final List<String> ParcelTypeList = [
-    'Food Delivery',
-    'Amazon Delivery',
-  ];
-  final List<String> ParcelTimeList = [
-    'Morning',
-    'Afternoon',
-    'Evening',
-    'Night',
+  String SpotSelected = '';
+
+  bool selected = false;
+  final List<String> VehicleTypeList = [
+    'Two Wheeler',
+    'Four Wheeler',
   ];
 
   @override
@@ -54,19 +56,6 @@ class _DeliveryCreatingState extends State<DeliveryCreating> {
             textTheme:
                 GoogleFonts.nunitoSansTextTheme(Theme.of(context).textTheme)),
         home: Scaffold(
-          appBar: AppBar(
-            title: const Text("Delivery Management",
-                style: TextStyle(
-                  fontSize: 25,
-                )),
-            centerTitle: true,
-            leading: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Icon(Icons.arrow_back_ios_new_outlined),
-            ),
-          ),
           resizeToAvoidBottomInset: false,
           body: SingleChildScrollView(
             child: Padding(
@@ -123,6 +112,7 @@ class _DeliveryCreatingState extends State<DeliveryCreating> {
                                   left: SizeConfig.screenHeight * 0.05,
                                   right: SizeConfig.screenHeight * 0.05),
                               child: DropdownButtonFormField2(
+                                dropdownOverButton: false,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.zero,
                                   border: OutlineInputBorder(
@@ -136,7 +126,7 @@ class _DeliveryCreatingState extends State<DeliveryCreating> {
                                 ),
                                 isExpanded: true,
                                 hint: Text(
-                                  'Select Parcel Type',
+                                  'Select Vehicle Type',
                                   style: GoogleFonts.nunito(
                                     fontSize: SizeConfig.blockSizeVertical * 2,
                                     fontWeight: FontWeight.w700,
@@ -153,7 +143,7 @@ class _DeliveryCreatingState extends State<DeliveryCreating> {
                                 dropdownDecoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
                                 ),
-                                items: ParcelTypeList.map((item) =>
+                                items: VehicleTypeList.map((item) =>
                                     DropdownMenuItem<String>(
                                       value: item,
                                       child: Text(
@@ -167,7 +157,7 @@ class _DeliveryCreatingState extends State<DeliveryCreating> {
                                     )).toList(),
                                 validator: (value) {
                                   if (value == null) {
-                                    return 'Please select Parcel Type';
+                                    return 'Please select Vehicle Type';
                                   }
                                 },
                                 onChanged: (value) {
@@ -199,7 +189,7 @@ class _DeliveryCreatingState extends State<DeliveryCreating> {
                                 ),
                                 isExpanded: true,
                                 hint: Text(
-                                  'Select Parcel Arriving time',
+                                  'Select A Parking Spot',
                                   style: GoogleFonts.nunito(
                                     fontSize: SizeConfig.blockSizeVertical * 2,
                                     fontWeight: FontWeight.w700,
@@ -216,7 +206,7 @@ class _DeliveryCreatingState extends State<DeliveryCreating> {
                                 dropdownDecoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
                                 ),
-                                items: ParcelTimeList.map((item) =>
+                                items: ParkingSpotList.map((item) =>
                                     DropdownMenuItem<String>(
                                       value: item,
                                       child: Text(
@@ -230,14 +220,14 @@ class _DeliveryCreatingState extends State<DeliveryCreating> {
                                     )).toList(),
                                 validator: (value) {
                                   if (value == null) {
-                                    return 'Please select Parcel Time';
+                                    return 'Please select Parking Spot';
                                   }
                                 },
                                 onChanged: (value) {
-                                  TimeSelected = value.toString();
+                                  SpotSelected = value.toString();
                                 },
                                 onSaved: (value) {
-                                  TimeSelected = value.toString();
+                                  SpotSelected = value.toString();
                                 },
                               ),
                             ),
@@ -265,7 +255,7 @@ class _DeliveryCreatingState extends State<DeliveryCreating> {
                                                       2),
                                         )),
                                     child: Center(
-                                      child: Text("Submit",
+                                      child: Text("Request",
                                           style: GoogleFonts.nunito(
                                             fontSize:
                                                 SizeConfig.blockSizeVertical *
@@ -277,43 +267,56 @@ class _DeliveryCreatingState extends State<DeliveryCreating> {
                                       if (_formKey.currentState!.validate()) {
                                         try {
                                           final userdata = GetStorage();
-                                          String ParcelRequest =
+                                          String SpotRequestname =
                                               userdata.read('name');
-                                          String? ParcelRequestcreator_room =
-                                              userdata.read('room_no');
-                                          userdata.read('name');
-                                          var firstObject =
-                                              ParseObject('Parcel');
-                                          firstObject.set('roomno',
-                                              ParcelRequestcreator_room?.trim());
-                                          firstObject.set(
-                                              'AddedBy', ParcelRequest.trim());
-                                          firstObject.set(
-                                              'type', TypeSelected.trim());
-                                          firstObject.set(
-                                              'time', TimeSelected.trim());
-                                          await firstObject.save();
+                                          String? SpotRequestroom =
+                                              userdata.read('room_no') ?? 'Info not Added';    
+                                          final QueryBuilder<ParseObject>
+                                              parseQuery =
+                                              QueryBuilder<ParseObject>(
+                                                  ParseObject('Parking'));
+                                          parseQuery.whereContains(
+                                              'spot', SpotSelected.toString());
+                                          final ParseResponse parseResponse =
+                                              await parseQuery.query();
+                                          if (parseResponse.success &&
+                                              parseResponse.results != null) {
+                                            final object = (parseResponse
+                                                .results!.first) as ParseObject;
+                                            String? id =
+                                                object.get<String>('objectId');
+                                            var todo = ParseObject('Parking')
+                                              ..objectId = id
+                                              ..set('alotted', true)
+                                              ..set(
+                                                  'to', SpotRequestname.trim())
+                                                  ..set(
+                                                  'Room_no', SpotRequestroom.trim())
+                                              ..set(
+                                                  'Type', TypeSelected.trim());
+                                            await todo.save();
+                                          } else {
+                                            print("error");
+                                          }
                                         } finally {
-                                          setState(() {
-                                            TypeSelected = '';
-                                            TimeSelected = '';
-                                            Flushbar(
-                                              flushbarPosition:
-                                                  FlushbarPosition.TOP,
-                                              flushbarStyle:
-                                                  FlushbarStyle.GROUNDED,
-                                              message: "Delivery Request Created",
-                                              icon: Icon(
-                                                Icons.info_outline,
-                                                size: 28.0,
-                                                color: Colors.blue[300],
-                                              ),
-                                              duration:
-                                                  const Duration(seconds: 3),
-                                              leftBarIndicatorColor:
-                                                  Colors.blue[300],
-                                            ).show(context);
-                                          });
+                                          TypeSelected = '';
+                                          SpotSelected = '';
+                                          Flushbar(
+                                            flushbarPosition:
+                                                FlushbarPosition.TOP,
+                                            flushbarStyle:
+                                                FlushbarStyle.GROUNDED,
+                                            message: "Parking Spot Allotted",
+                                            icon: Icon(
+                                              Icons.info_outline,
+                                              size: 28.0,
+                                              color: Colors.blue[300],
+                                            ),
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                          ).show(context);
                                         }
                                       }
                                     },
@@ -342,13 +345,13 @@ class _DeliveryCreatingState extends State<DeliveryCreating> {
         children: <Widget>[
           const Spacer(),
           SvgPicture.asset(
-            "assets/delivery.svg",
+            "assets/Parking.svg",
             height: SizeConfig.screenHeight * 0.18,
             width: SizeConfig.screenWidth * 0.25,
           ),
           const Spacer(),
           Text(
-            "Enter the details below to\n Add a Parcel Delivery Request",
+            "Enter the details below to\n Request a Allotment For vehicle Parking",
             textAlign: TextAlign.center,
             style: GoogleFonts.nunito(
               fontSize: SizeConfig.blockSizeVertical * 2.4,
@@ -360,7 +363,25 @@ class _DeliveryCreatingState extends State<DeliveryCreating> {
     );
   }
 
-  void showalertdialog() {
+  Future<List<ParseObject>> getSpotList(BuildContext context) async {
+    QueryBuilder<ParseObject> queryTodo =
+        QueryBuilder<ParseObject>(ParseObject('Parking'));
+    queryTodo.whereValueExists('alotted', false);
+    final ParseResponse apiResponse = await queryTodo.query();
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (var o in apiResponse.results!) {
+        final object = o as ParseObject;
+        ParkingSpotList.add(object.get<String>('spot'));
+      }
+      return apiResponse.results!.reversed.toList() as List<ParseObject>;
+    } else {
+      VisitorNotFound();
+      return [];
+    }
+  }
+
+  void VisitorNotFound() {
     showDialog(
         context: context,
         builder: (context) {
@@ -369,11 +390,31 @@ class _DeliveryCreatingState extends State<DeliveryCreating> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                //title: VisitorCode(),
-                content: ElevatedButton(
-                  onPressed: () async {},
-                  child: const Text(
-                    "MyGate",
+                content: Container(
+                  color: Colors.white,
+                  height: SizeConfig.screenHeight * 0.45,
+                  width: SizeConfig.screenWidth * 0.90,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: SizeConfig.screenHeight * 0.3,
+                        width: SizeConfig.screenWidth * 0.60,
+                        child: Lottie.asset(
+                          "assets/71229-not-found.json",
+                        ),
+                      ),
+                      SizedBox(
+                        height: SizeConfig.screenHeight * 0.02,
+                      ),
+                      Text(
+                        "Sorry \nNo Parking Spots Are available",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.nunito(
+                          fontSize: SizeConfig.blockSizeVertical * 2.5,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
                 ));
           });

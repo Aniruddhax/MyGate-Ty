@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/config/size_config.dart';
 import 'package:mygate/screens/Parcel/DeliveryList.dart';
 import 'package:mygate/screens/Parcel/deliveryCreation.dart';
+import 'package:mygate/screens/Parking/parking_screen.dart';
 import 'package:mygate/screens/Profile%20Page/profilepage.dart';
 import 'package:mygate/screens/complaints/complaints.dart';
 import 'package:mygate/screens/login/roleselect.dart';
@@ -16,6 +17,7 @@ import 'package:mygate/screens/payments/Finechecker.dart';
 import 'package:mygate/screens/payments/paymentCreation.dart';
 import 'package:mygate/screens/splashscreen/splash_screen.dart';
 import 'package:mygate/screens/visitor/VerifyingVisitor.dart';
+import 'package:mygate/screens/visitor/VisitorPage.dart';
 
 class homescreen extends StatefulWidget {
   const homescreen({Key? key}) : super(key: key);
@@ -76,7 +78,6 @@ class tab_1 extends StatefulWidget {
 }
 
 class _tab_1State extends State<tab_1> {
-  @override
   @override
   Widget build(BuildContext context) {
     final userdata = GetStorage();
@@ -178,7 +179,7 @@ class _tab_1State extends State<tab_1> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const DeliveryCreating()));}
+                                          const visitorCreating()));}
                           },
                           child: dasboardServiesGrid(
                             title: "Visitor / Guest Management",
@@ -223,6 +224,22 @@ class _tab_1State extends State<tab_1> {
                             icon: Icons.request_quote_outlined,
                           ),
                         ),
+                        GestureDetector(
+                          onTap: () {
+                            
+                            Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Parking_screen()));},
+                          
+                          child: dasboardServiesGrid(
+                            title: "Parking",
+                            icon: Icons.local_parking_outlined,
+                          ),
+                          
+                        ),
+                        
                       ],
                     ),
                   )),

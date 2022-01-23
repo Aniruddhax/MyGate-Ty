@@ -453,17 +453,6 @@ class _due_CreationState extends State<due_Creation> {
     );
   }
 
-  Future<List<ParseObject>> getcomplaint() async {
-    QueryBuilder<ParseObject> queryTodo =
-        QueryBuilder<ParseObject>(ParseObject('Dues'));
-    final ParseResponse apiResponse = await queryTodo.query();
-
-    if (apiResponse.success && apiResponse.results != null) {
-      return apiResponse.results!.reversed.toList() as List<ParseObject>;
-    } else {
-      return [];
-    }
-  }
 
   Future<List<ParseObject>> getMemberFine({required String Member}) async {
     QueryBuilder<ParseObject> queryTodo =
