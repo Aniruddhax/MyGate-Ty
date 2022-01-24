@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/config/size_config.dart';
+import 'package:mygate/screens/Parking/cancel_allottment.dart';
 import 'package:mygate/screens/Parking/check_allottement.dart';
 import 'package:mygate/screens/Parking/request_allottment.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
@@ -95,28 +96,6 @@ class _Parking_screenState extends State<Parking_screen> {
                   role == 'Committee' ? Committee_tabPages : Normal_tabPages,
             ),
           )),
-    );
-  }
-}
-
-
-
-
-
-class cancel_allottment extends StatelessWidget {
-  const cancel_allottment({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: const Text("3",
-            style: TextStyle(
-              fontSize: 25,
-            )),
-      ),
     );
   }
 }

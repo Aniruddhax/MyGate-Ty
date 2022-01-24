@@ -1,0 +1,43 @@
+Date : 2022-01-24 02:24:00
+Directory : d:\TY Project\MyGate
+Total : 10 files,  734 codes, 24 comments, 41 blanks, all 799 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Dart     |          8 |        732 |         24 |         41 |        797 |
+| XML      |          1 |          1 |          0 |          0 |          1 |
+| JSON     |          1 |          1 |          0 |          0 |          1 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                             | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                |         10 |        734 |         24 |         41 |        799 |
+| assets                                                           |          2 |          2 |          0 |          0 |          2 |
+| lib                                                              |          8 |        732 |         24 |         41 |        797 |
+| lib\screens                                                      |          8 |        732 |         24 |         41 |        797 |
+| lib\screens\Parcel                                               |          2 |         40 |          3 |          0 |         43 |
+| lib\screens\Parking                                              |          3 |        690 |         21 |         38 |        749 |
+| lib\screens\homescreen                                           |          1 |         13 |          0 |          4 |         17 |
+| lib\screens\payments                                             |          2 |        -11 |          0 |         -1 |        -12 |
++------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                         | language | code       | comment    | blank      | total      |
++------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| d:\TY Project\MyGate\assets\71229-not-found.json                 | JSON     |          1 |          0 |          0 |          1 |
+| d:\TY Project\MyGate\assets\Parking.svg                          | XML      |          1 |          0 |          0 |          1 |
+| d:\TY Project\MyGate\lib\screens\Parcel\DeliveryList.dart        | Dart     |         23 |          3 |          0 |         26 |
+| d:\TY Project\MyGate\lib\screens\Parcel\deliveryCreation.dart    | Dart     |         17 |          0 |          0 |         17 |
+| d:\TY Project\MyGate\lib\screens\Parking\check_allottement.dart  | Dart     |        182 |         10 |         10 |        202 |
+| d:\TY Project\MyGate\lib\screens\Parking\parking_screen.dart     | Dart     |         99 |         10 |         14 |        123 |
+| d:\TY Project\MyGate\lib\screens\Parking\request_allottment.dart | Dart     |        409 |          1 |         14 |        424 |
+| d:\TY Project\MyGate\lib\screens\homescreen\home_screen.dart     | Dart     |         13 |          0 |          4 |         17 |
+| d:\TY Project\MyGate\lib\screens\payments\Finechecker.dart       | Dart     |         -1 |          0 |          0 |         -1 |
+| d:\TY Project\MyGate\lib\screens\payments\paymentCreation.dart   | Dart     |        -10 |          0 |         -1 |        -11 |
+| Total                                                            |          |        734 |         24 |         41 |        799 |
++------------------------------------------------------------------+----------+------------+------------+------------+------------+

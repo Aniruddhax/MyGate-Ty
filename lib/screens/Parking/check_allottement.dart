@@ -167,7 +167,7 @@ class ListBuilder extends StatelessWidget {
                               Container(
                                 padding: EdgeInsets.symmetric(
                                     vertical: SizeConfig.blockSizeVertical * 1),
-                                width: SizeConfig.screenWidth * 0.28,
+                                width: SizeConfig.screenWidth * 0.30,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
                                     color: Type == null

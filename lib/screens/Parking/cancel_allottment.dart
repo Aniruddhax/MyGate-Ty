@@ -10,14 +10,14 @@ import 'package:lottie/lottie.dart';
 import 'package:mygate/config/size_config.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
-class request_allotment extends StatefulWidget {
-  request_allotment({Key? key}) : super(key: key);
+class cancel_allottment extends StatefulWidget {
+  cancel_allottment({Key? key}) : super(key: key);
 
   @override
-  _request_allotmentState createState() => _request_allotmentState();
+  _cancel_allottmentState createState() => _cancel_allottmentState();
 }
 
-class _request_allotmentState extends State<request_allotment> {
+class _cancel_allottmentState extends State<cancel_allottment> {
   @override
   void initState() {
     //etMemberList(context);
@@ -28,14 +28,9 @@ class _request_allotmentState extends State<request_allotment> {
   List ParkingSpotList = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String TypeSelected = '';
   String SpotSelected = '';
 
   bool selected = false;
-  final List<String> VehicleTypeList = [
-    'Two Wheeler',
-    'Four Wheeler',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -100,77 +95,13 @@ class _request_allotmentState extends State<request_allotment> {
                         ),
                       ),
                       SizedBox(
-                        height: SizeConfig.screenHeight * 0.02,
+                        height: SizeConfig.screenHeight * 0.04,
                       ),
                       Form(
                         autovalidateMode: AutovalidateMode.disabled,
                         key: _formKey,
                         child: Column(
                           children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: SizeConfig.screenHeight * 0.05,
-                                  right: SizeConfig.screenHeight * 0.05),
-                              child: DropdownButtonFormField2(
-                                dropdownOverButton: false,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.zero,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: Colors.red),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                ),
-                                isExpanded: true,
-                                hint: Text(
-                                  'Select Vehicle Type',
-                                  style: GoogleFonts.nunito(
-                                    fontSize: SizeConfig.blockSizeVertical * 2,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                icon: const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.black45,
-                                ),
-                                iconSize: SizeConfig.blockSizeVertical * 5,
-                                buttonHeight: SizeConfig.screenHeight * 0.08,
-                                buttonPadding:
-                                    const EdgeInsets.only(left: 20, right: 10),
-                                dropdownDecoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                items: VehicleTypeList.map((item) =>
-                                    DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(
-                                        item,
-                                        style: GoogleFonts.nunito(
-                                          fontSize:
-                                              SizeConfig.blockSizeVertical * 2,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    )).toList(),
-                                validator: (value) {
-                                  if (value == null) {
-                                    return 'Please select Vehicle Type';
-                                  }
-                                },
-                                onChanged: (value) {
-                                  TypeSelected = value.toString();
-                                },
-                                onSaved: (value) {
-                                  TypeSelected = value.toString();
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              height: SizeConfig.screenHeight * 0.02,
-                            ),
                             Padding(
                               padding: EdgeInsets.only(
                                   left: SizeConfig.screenHeight * 0.05,
@@ -255,7 +186,7 @@ class _request_allotmentState extends State<request_allotment> {
                                                       2),
                                         )),
                                     child: Center(
-                                      child: Text("Request",
+                                      child: Text("Cancel",
                                           style: GoogleFonts.nunito(
                                             fontSize:
                                                 SizeConfig.blockSizeVertical *
@@ -266,11 +197,6 @@ class _request_allotmentState extends State<request_allotment> {
                                     onPressed: () async {
                                       if (_formKey.currentState!.validate()) {
                                         try {
-                                          final userdata = GetStorage();
-                                          String SpotRequestname =
-                                              userdata.read('name');
-                                          String? SpotRequestroom =
-                                              userdata.read('room_no') ?? 'Info not Added';    
                                           final QueryBuilder<ParseObject>
                                               parseQuery =
                                               QueryBuilder<ParseObject>(
@@ -287,36 +213,18 @@ class _request_allotmentState extends State<request_allotment> {
                                                 object.get<String>('objectId');
                                             var todo = ParseObject('Parking')
                                               ..objectId = id
-                                              ..set('allotted', "true")
+                                              ..set('alotted', false)
+                                              ..set('to', null)
+                                              ..set('Room_no', null)
+                                              ..set("Type", null)
                                               ..set(
-                                                  'to', SpotRequestname.trim())
-                                                  ..set(
-                                                  'Room_no', SpotRequestroom.trim())
-                                              ..set(
-                                                  'Type', TypeSelected.trim());
+                                                  'spot', SpotSelected.trim());
+
                                             await todo.save();
-                                          } else {
-                                            print("error");
-                                          }
+                                          } else {}
                                         } finally {
-                                          TypeSelected = '';
                                           SpotSelected = '';
-                                          Flushbar(
-                                            flushbarPosition:
-                                                FlushbarPosition.TOP,
-                                            flushbarStyle:
-                                                FlushbarStyle.GROUNDED,
-                                            message: "Parking Spot Allotted",
-                                            icon: Icon(
-                                              Icons.info_outline,
-                                              size: 28.0,
-                                              color: Colors.blue[300],
-                                            ),
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            leftBarIndicatorColor:
-                                                Colors.blue[300],
-                                          ).show(context);
+                                          VisitorNotFound();
                                         }
                                       }
                                     },
@@ -345,13 +253,13 @@ class _request_allotmentState extends State<request_allotment> {
         children: <Widget>[
           const Spacer(),
           SvgPicture.asset(
-            "assets/Parking.svg",
+            "assets/undraw_cancel_re_ctke (1).svg",
             height: SizeConfig.screenHeight * 0.18,
             width: SizeConfig.screenWidth * 0.25,
           ),
           const Spacer(),
           Text(
-            "Enter the details below to\n Request a Allotment For vehicle Parking",
+            "Enter the details below to\n Cancel Parking Allottment",
             textAlign: TextAlign.center,
             style: GoogleFonts.nunito(
               fontSize: SizeConfig.blockSizeVertical * 2.4,
@@ -366,7 +274,7 @@ class _request_allotmentState extends State<request_allotment> {
   Future<List<ParseObject>> getSpotList(BuildContext context) async {
     QueryBuilder<ParseObject> queryTodo =
         QueryBuilder<ParseObject>(ParseObject('Parking'));
-    queryTodo.whereContains("allotted", "false");
+    queryTodo.whereContains("allotted", "true");
     final ParseResponse apiResponse = await queryTodo.query();
 
     if (apiResponse.success && apiResponse.results != null) {
@@ -376,7 +284,7 @@ class _request_allotmentState extends State<request_allotment> {
       }
       return apiResponse.results!.reversed.toList() as List<ParseObject>;
     } else {
-      VisitorNotFound();
+      print("error");
       return [];
     }
   }
@@ -400,14 +308,14 @@ class _request_allotmentState extends State<request_allotment> {
                         height: SizeConfig.screenHeight * 0.3,
                         width: SizeConfig.screenWidth * 0.60,
                         child: Lottie.asset(
-                          "assets/71229-not-found.json",
+                          "assets/18374-right-check.json",
                         ),
                       ),
                       SizedBox(
                         height: SizeConfig.screenHeight * 0.02,
                       ),
                       Text(
-                        "Sorry \nNo Parking Spots Are available",
+                        "Parking Spot Alottmemt Cancelled",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.nunito(
                           fontSize: SizeConfig.blockSizeVertical * 2.5,
