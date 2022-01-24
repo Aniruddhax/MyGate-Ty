@@ -1,16 +1,12 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, non_constant_identifier_names
 
-import 'package:another_flushbar/flushbar.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/config/size_config.dart';
 import 'package:mygate/screens/Parking/cancel_allottment.dart';
 import 'package:mygate/screens/Parking/check_allottement.dart';
 import 'package:mygate/screens/Parking/request_allottment.dart';
-import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class Parking_screen extends StatefulWidget {
   const Parking_screen({Key? key}) : super(key: key);
@@ -24,40 +20,40 @@ class _Parking_screenState extends State<Parking_screen> {
   Widget build(BuildContext context) {
     //Normal tabs
     final normal_tabIcon = <Tab>[
-      Tab(
+      const Tab(
         text: "Request Allottment",
       ),
-      Tab(
+      const Tab(
         text: "Check Previous Allottment",
       ),
     ];
     final Normal_tabPages = <Widget>[
       //TAB 1
-      request_allotment(),
+      const request_allotment(),
       //TAB 2
-      check_allottment(),
+      const check_allottment(),
     ];
     //------
 
     //Committee tabs
     final Committee_tabIcon = <Tab>[
-      Tab(
+      const Tab(
         text: "Request \nAllottment",
       ),
-      Tab(
+      const Tab(
         text: "Check Previous \nAllottment",
       ),
-      Tab(
+      const Tab(
         text: "Cancel \nAllottment",
       ),
     ];
     final Committee_tabPages = <Widget>[
       //TAB 1
-      request_allotment(),
+      const request_allotment(),
       //TAB 2
-      check_allottment(),
+      const check_allottment(),
       //TAB 2
-      cancel_allottment(),
+      const cancel_allottment(),
     ];
     //------
 

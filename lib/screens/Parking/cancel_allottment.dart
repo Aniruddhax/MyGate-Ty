@@ -1,17 +1,17 @@
+// ignore_for_file: camel_case_types, non_constant_identifier_names, sized_box_for_whitespace
+
 import 'dart:async';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mygate/config/size_config.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class cancel_allottment extends StatefulWidget {
-  cancel_allottment({Key? key}) : super(key: key);
+  const cancel_allottment({Key? key}) : super(key: key);
 
   @override
   _cancel_allottmentState createState() => _cancel_allottmentState();
@@ -284,7 +284,6 @@ class _cancel_allottmentState extends State<cancel_allottment> {
       }
       return apiResponse.results!.reversed.toList() as List<ParseObject>;
     } else {
-      print("error");
       return [];
     }
   }

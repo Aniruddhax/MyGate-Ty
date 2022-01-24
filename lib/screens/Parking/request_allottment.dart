@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types, non_constant_identifier_names, sized_box_for_whitespace
+
 import 'dart:async';
 
 import 'package:another_flushbar/flushbar.dart';
@@ -11,7 +13,7 @@ import 'package:mygate/config/size_config.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class request_allotment extends StatefulWidget {
-  request_allotment({Key? key}) : super(key: key);
+  const request_allotment({Key? key}) : super(key: key);
 
   @override
   _request_allotmentState createState() => _request_allotmentState();
@@ -296,7 +298,6 @@ class _request_allotmentState extends State<request_allotment> {
                                                   'Type', TypeSelected.trim());
                                             await todo.save();
                                           } else {
-                                            print("error");
                                           }
                                         } finally {
                                           TypeSelected = '';

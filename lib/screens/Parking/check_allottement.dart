@@ -1,11 +1,12 @@
-import 'package:another_flushbar/flushbar.dart';
+// ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/config/size_config.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class check_allottment extends StatefulWidget {
-  check_allottment({Key? key}) : super(key: key);
+  const check_allottment({Key? key}) : super(key: key);
 
   @override
   _check_allottmentState createState() => _check_allottmentState();
@@ -91,7 +92,7 @@ class ListBuilder extends StatelessWidget {
                   final varTodo = snapshot.data![index];
                   final Name = varTodo.get<String>('to');
                   final Type = varTodo.get<String>('Type');
-                  final room_no = varTodo.get<String>('Room_no');
+                  //final room_no = varTodo.get<String>('Room_no');
                   final spot = varTodo.get<String>('spot');
 
                   //*************************************
