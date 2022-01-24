@@ -213,7 +213,7 @@ class _cancel_allottmentState extends State<cancel_allottment> {
                                                 object.get<String>('objectId');
                                             var todo = ParseObject('Parking')
                                               ..objectId = id
-                                              ..set('alotted', false)
+                                              ..set('allotted', "false")
                                               ..set('to', null)
                                               ..set('Room_no', null)
                                               ..set("Type", null)
