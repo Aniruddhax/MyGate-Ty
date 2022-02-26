@@ -27,12 +27,14 @@ class _DeliveryCreatingState extends State<DeliveryCreating> {
   final List<String> ParcelTypeList = [
     'Food Delivery',
     'Amazon Delivery',
+    'Other Delivery',
   ];
   final List<String> ParcelTimeList = [
-    'Morning',
-    'Afternoon',
-    'Evening',
-    'Night',
+    'Morning (6:00AM - 12:00PM)',
+    'Afternoon (12:00PM - 4:00PM)',
+    'Evening (4:00PM - 8:00PM)',
+    'Night (8:00PM - 12:00AM)',
+    'OverNight (12:00AM - 6:00AM)',
   ];
 
   @override

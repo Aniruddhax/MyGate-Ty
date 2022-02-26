@@ -175,11 +175,13 @@ class _tab_1State extends State<tab_1> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           const veryfingVisitor()));
-                            } else {Navigator.push(
+                            } else {
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const visitorCreating()));}
+                                          const visitorCreating()));
+                            }
                           },
                           child: dasboardServiesGrid(
                             title: "Visitor / Guest Management",
@@ -194,11 +196,13 @@ class _tab_1State extends State<tab_1> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           const deliveryList()));
-                            } else {Navigator.push(
+                            } else {
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const DeliveryCreating()));}
+                                          const DeliveryCreating()));
+                            }
                           },
                           child: dasboardServiesGrid(
                             title: "Delivery Management",
@@ -213,11 +217,12 @@ class _tab_1State extends State<tab_1> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           const due_Creation()));
-                            } else {Navigator.push(
+                            } else {
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const Fine_List()));}
+                                      builder: (context) => const Fine_List()));
+                            }
                           },
                           child: dasboardServiesGrid(
                             title: "Society Dues",
@@ -226,20 +231,27 @@ class _tab_1State extends State<tab_1> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            
                             Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          Parking_screen()));},
-                          
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Parking_screen()));
+                          },
                           child: dasboardServiesGrid(
                             title: "Parking",
                             icon: Icons.local_parking_outlined,
                           ),
-                          
                         ),
-                        
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Parking_screen()));
+                          },
+                          child: dasboardServiesGrid(
+                              title: "Help Desk",
+                              icon: Icons.help_center_outlined),
+                        ),
                       ],
                     ),
                   )),

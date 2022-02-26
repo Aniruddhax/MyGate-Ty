@@ -6,7 +6,7 @@
 
 
    <application
-        android:label="mygate"
+        android:label="MyGate"
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
         <activity
