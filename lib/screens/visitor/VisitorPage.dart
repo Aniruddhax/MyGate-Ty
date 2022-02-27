@@ -322,6 +322,10 @@ class _visitorCreatingState extends State<visitorCreating> {
                                           firstObject.set('OTP', OTP);
                                           await firstObject.save();
                                         } finally {
+                                          visitorname.clear();
+                                          visitorNo.clear();
+                                          visitorTime.clear();
+
                                           showalertdialog();
                                         }
                                       }
@@ -377,7 +381,7 @@ class _visitorCreatingState extends State<visitorCreating> {
       padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 2.4),
       child: Container(
         color: Colors.white,
-        height: SizeConfig.screenHeight * 0.45,
+        height: SizeConfig.screenHeight * 0.50,
         width: SizeConfig.screenWidth * 0.75,
         child: Column(
           children: <Widget>[

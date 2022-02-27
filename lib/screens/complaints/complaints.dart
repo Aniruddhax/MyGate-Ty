@@ -330,6 +330,8 @@ class _complaintsState extends State<complaints> {
                                               complaintcreator.trim());
                                           await firstObject.save();
                                         } finally {
+                                          complaintTitle.clear();
+                                          complaintSubject.clear();
                                           Flushbar(
                                             flushbarPosition:
                                                 FlushbarPosition.TOP,
@@ -425,14 +427,12 @@ class _complaintsState extends State<complaints> {
                   try {
                     var todo = ParseObject('Complaints')..objectId = id;
                     await todo.delete();
-                    
                   } finally {
                     setState(() {});
                     Flushbar(
                       flushbarPosition: FlushbarPosition.TOP,
                       flushbarStyle: FlushbarStyle.GROUNDED,
-                      message:
-                          "Complaint Resolved",
+                      message: "Complaint Resolved",
                       icon: Icon(
                         Icons.info_outline,
                         size: 28.0,

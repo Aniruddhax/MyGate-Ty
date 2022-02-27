@@ -241,17 +241,6 @@ class _tab_1State extends State<tab_1> {
                             icon: Icons.local_parking_outlined,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Parking_screen()));
-                          },
-                          child: dasboardServiesGrid(
-                              title: "Help Desk",
-                              icon: Icons.help_center_outlined),
-                        ),
                       ],
                     ),
                   )),

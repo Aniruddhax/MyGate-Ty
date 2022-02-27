@@ -213,8 +213,10 @@ class _veryfingVisitorState extends State<veryfingVisitor> {
                                             ..objectId = objectid;
                                           await todo.delete();
                                           VisitorFound(name: VisitorName);
+                                          otpCheck.clear();
                                         } else {
                                           VisitorNotFound();
+                                          otpCheck.clear();
                                         }
                                       }
                                     },

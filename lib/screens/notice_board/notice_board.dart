@@ -73,20 +73,19 @@ class _noticeboardState extends State<noticeboard> {
 
             if (rolechecker == 'Committee') {
               showalertdialog();
-            }
-            else{
+            } else {
               Flushbar(
-                              flushbarPosition: FlushbarPosition.TOP,
-                              flushbarStyle: FlushbarStyle.GROUNDED,
-                              message: "Only Committee Members are allowed to Add Notice",
-                              icon: Icon(
-                                Icons.info_outline,
-                                size: 28.0,
-                                color: Colors.blue[300],
-                              ),
-                              duration: const Duration(seconds: 3),
-                              leftBarIndicatorColor: Colors.blue[300],
-                            ).show(context);
+                flushbarPosition: FlushbarPosition.TOP,
+                flushbarStyle: FlushbarStyle.GROUNDED,
+                message: "Only Committee Members are allowed to Add Notice",
+                icon: Icon(
+                  Icons.info_outline,
+                  size: 28.0,
+                  color: Colors.blue[300],
+                ),
+                duration: const Duration(seconds: 3),
+                leftBarIndicatorColor: Colors.blue[300],
+              ).show(context);
             }
           },
           child: const Icon(Icons.add),
@@ -142,68 +141,61 @@ class _noticeboardState extends State<noticeboard> {
                                 return Padding(
                                   padding: EdgeInsets.all(
                                       SizeConfig.blockSizeHorizontal * 2),
-                                  child: Dismissible(
-                                    key: ValueKey(snapshot.data![index]),
-                                    onDismissed: (DismissDirection direction) {
-                                      setState(() async {});
-                                    },
-                                    child: Card(
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                            left:
-                                                SizeConfig.blockSizeHorizontal *
-                                                    2),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              varTitle,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: SizeConfig
-                                                          .blockSizeHorizontal *
-                                                      6),
-                                            ),
-                                            SizedBox(
-                                              height: SizeConfig.screenHeight *
-                                                  0.005,
-                                            ),
-                                            Text(
-                                              varcontent,
-                                              style: TextStyle(
-                                                  fontSize: SizeConfig
-                                                          .blockSizeHorizontal *
-                                                      4),
-                                            ),
-                                            SizedBox(
-                                              height: SizeConfig.screenHeight *
-                                                  0.005,
-                                            ),
-                                            Text(
-                                              createdat,
-                                              style: TextStyle(
-                                                  fontSize: SizeConfig
-                                                          .blockSizeHorizontal *
-                                                      4),
-                                            ),
-                                            SizedBox(
-                                              height: SizeConfig.screenHeight *
-                                                  0.005,
-                                            ),
-                                            Text(
-                                              varCreatedBy,
-                                              style: TextStyle(
-                                                  fontSize: SizeConfig
-                                                          .blockSizeHorizontal *
-                                                      4),
-                                            ),
-                                            SizedBox(
-                                              height: SizeConfig.screenHeight *
-                                                  0.005,
-                                            ),
-                                          ],
-                                        ),
+                                  child: Card(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: SizeConfig.blockSizeHorizontal *
+                                              2),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            varTitle,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: SizeConfig
+                                                        .blockSizeHorizontal *
+                                                    6),
+                                          ),
+                                          SizedBox(
+                                            height:
+                                                SizeConfig.screenHeight * 0.005,
+                                          ),
+                                          Text(
+                                            varcontent,
+                                            style: TextStyle(
+                                                fontSize: SizeConfig
+                                                        .blockSizeHorizontal *
+                                                    4),
+                                          ),
+                                          SizedBox(
+                                            height:
+                                                SizeConfig.screenHeight * 0.005,
+                                          ),
+                                          Text(
+                                            createdat,
+                                            style: TextStyle(
+                                                fontSize: SizeConfig
+                                                        .blockSizeHorizontal *
+                                                    4),
+                                          ),
+                                          SizedBox(
+                                            height:
+                                                SizeConfig.screenHeight * 0.005,
+                                          ),
+                                          Text(
+                                            varCreatedBy,
+                                            style: TextStyle(
+                                                fontSize: SizeConfig
+                                                        .blockSizeHorizontal *
+                                                    4),
+                                          ),
+                                          SizedBox(
+                                            height:
+                                                SizeConfig.screenHeight * 0.005,
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -327,6 +319,8 @@ class _noticeboardState extends State<noticeboard> {
                               duration: const Duration(seconds: 3),
                               leftBarIndicatorColor: Colors.blue[300],
                             ).show(context);
+                            title.clear();
+                            content.clear();
                           }
                         },
                       ),
