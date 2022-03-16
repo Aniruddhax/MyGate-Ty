@@ -322,10 +322,6 @@ class _visitorCreatingState extends State<visitorCreating> {
                                           firstObject.set('OTP', OTP);
                                           await firstObject.save();
                                         } finally {
-                                          visitorname.clear();
-                                          visitorNo.clear();
-                                          visitorTime.clear();
-
                                           showalertdialog();
                                         }
                                       }

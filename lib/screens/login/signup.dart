@@ -4,6 +4,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mygate/config/size_config.dart';
+import 'package:mygate/screens/login/roleselect.dart';
 import 'package:mygate/screens/splashscreen/splash_screen.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -106,7 +107,7 @@ class _signupState extends State<signup> {
                                 ),
                                 prefixIcon: const Icon(Icons.mail),
                                 labelText: "Enter Your Full Name",
-                                hintText: "abc@gmail.com"),
+                                hintText: "John Doe"),
                           ),
                         ),
                         SizedBox(
@@ -321,7 +322,7 @@ class _signupState extends State<signup> {
                                             SizeConfig.blockSizeVertical * 2),
                                   )),
                               child: Center(
-                                child: Text("Login",
+                                child: Text("Register",
                                     style: GoogleFonts.nunito(
                                       fontSize:
                                           SizeConfig.blockSizeVertical * 2.4,
@@ -333,9 +334,8 @@ class _signupState extends State<signup> {
                                   final QueryBuilder<ParseObject> parseQuery =
                                       QueryBuilder<ParseObject>(
                                           ParseObject('MyGate'));
-                                  parseQuery
-                                    .whereContains(
-                                        'email', useremail.text.trim());
+                                  parseQuery.whereContains(
+                                      'email', useremail.text.trim());
                                   final ParseResponse parseResponse =
                                       await parseQuery.query();
                                   if (parseResponse.success &&
@@ -372,7 +372,13 @@ class _signupState extends State<signup> {
                                   fontWeight: FontWeight.w400,
                                 )),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const roleselect()));
+                              },
                               child: Text("Sign In",
                                   style: GoogleFonts.nunito(
                                     fontSize: SizeConfig.blockSizeVertical * 2,

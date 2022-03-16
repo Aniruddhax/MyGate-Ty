@@ -179,6 +179,7 @@ class _editprofileState extends State<editprofile> {
                             left: SizeConfig.screenWidth * 0.13,
                             right: SizeConfig.screenWidth * 0.10),
                         child: TextFormField(
+                          keyboardType:TextInputType.number,
                           controller: mobno,
                           onSaved: (value) {
                             mobno.text = value!;
